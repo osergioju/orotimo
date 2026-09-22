@@ -1,0 +1,64 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block content %}
+<form method="post" action="{% url 'dash_inicial' id_escola=escolas.Id_Escola %}">
+
+    <div class="divided_bloc">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="title-welcome">
+                        <h2>Olá, {{ nome_user }}.</h2>
+                        <p>O que deja fazer?</p>
+                    </div>
+                    <div class="options-users row">
+
+                        <div class="col-12 col-lg-3">
+                            <a href="{% url 'cadastrar_usuario' id_escola=escolas.Id_Escola %}" class="cardactions_person">
+                                <i class="icn_person1"></i>
+                                <div class="desc-action">
+                                    <p>Cadastrar novo<br> usuário</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-12 col-lg-3">
+                            <a href="{% url 'meus_usuarios' id_escola=escolas.Id_Escola %}" class="cardactions_person">
+                                <i class="icn_person1"></i>
+                                <div class="desc-action">
+                                    <p>Meus usuários<Br>cadastrados</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-12 col-lg-3">
+                            <a href="{% url 'meus_dados' id_escola=escolas.Id_Escola %}" class="cardactions_person">
+                                <i class="icn_person1"></i>
+                                <div class="desc-action">
+                                    <p>Informações<br>da conta</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-12 col-lg-3">
+                            <a href="{% url 'solucoes' id_escola=escolas.Id_Escola %}" class="cardactions_person">
+                                <i class="icn_person1"></i>
+                                <div class="desc-action">
+                                    <p>Minhas<br>soluções</p>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+    
+{% endblock %} 

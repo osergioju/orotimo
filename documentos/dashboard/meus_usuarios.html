@@ -1,0 +1,159 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    Meus usuários
+{% endblock %}
+
+{% block content %}
+    {% csrf_token %}
+    <div class="divided_bloc">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-12">
+                    <div class="bubblebox_dash">
+                        <div class="header-bubblebox">
+                            <h2>Usuários para {{ escolas.Nome_Escola }}.</h2>
+                        </div>
+                        <div class="body-bubblebox">
+                            <div class="table_dashboard">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <td>Nome</td>
+                                            <td>E-mail</td>
+                                            <td>Unidade</td>
+                                            <td>Status</td>
+                                            <td>Ações</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for usuario in usuarios %}
+                                            <tr>
+                                                <td>{{ usuario.Nome_Usuario }}</td>
+                                                <td>{{ usuario.Email }}</td>
+                                                <td>{{ usuario.Id_Unidade.Nome_Unidade }}</td>
+                                                <td>{% if usuario.Is_Ativo == 1 %} Ativo {% else %} Inativo {% endif %}</td>
+                                                <td>
+                                                    <a href="javascript:void(0)" onclick="loadUsers(this, {{ usuario.Id_Usuario }})">
+                                                        Editar
+                                                        <div class="actionen_">
+                                                            <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" style="shape-rendering: auto; display: block;">
+                                                                <g>
+                                                                    <circle cx="50" cy="50" fill="none" stroke="#e15b64" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
+                                                                        <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+                                                                    </circle>
+                                                                </g>
+                                                            </svg>
+                                                        </div>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-edituser">
+        <div class="centermodal-edit">
+            <div class="box-modal-edit">
+                <div class="headermodal-edit">
+                    <button type="button" onclick="closeEdituser()">x</button>
+                </div>
+                <div class="bodymodal-edit">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function closeEdituser(){
+            $('.modal-edituser').fadeOut();
+        }   
+        function saveUserstat(){
+            $('.loading-edituser').fadeIn();
+            var userdata = $('.minimodal form input:not(.switch input)').serialize();
+            var permissoes = $('.minimodal .supergrupoforms input').serialize();
+            var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+            
+            $.ajax({        
+                type: 'POST',
+                url: '{% url "meus_usuarios" id_escola=escolas.Id_Escola %}', 
+                data : {
+                    csrfmiddlewaretoken: csrfToken, 
+                    userdata: userdata,
+                    permissions : permissoes,
+                    action : 'save'
+                },
+                success: function(data) {
+                    $('.actionen_ svg').addClass('apareca__Svg');
+                    $('.loading-iconic').fadeOut();
+                    $('.sucess-iconic').delay(500).fadeIn();
+                    setTimeout(function(){
+                        window.location.reload();
+                    }, 1000)
+                },
+                error: function(xhr, status, error) {
+                    // Erro
+                    $('.loadercode').fadeOut();
+                    alert('Erro na requisição');
+                    console.log('Status: ' + status);
+                    console.log('Erro: ' + error);
+                }
+            });
+        }
+
+
+        // Aparecer modal de editar user
+        function loadUsers(element, id){
+            $(element).find('svg').addClass('apareca__Svg');
+            var csrfToken = $('input[name="csrfmiddlewaretoken"]').val(); 
+            $.ajax({
+                type: 'POST',
+                url: '{% url "meus_usuarios" id_escola=escolas.Id_Escola %}', 
+                data : {
+                    csrfmiddlewaretoken: csrfToken, 
+                    id : id,
+                    action : 'edit'
+                },
+                success: function(data) {
+                    $('svg').removeClass('apareca__Svg');
+                    $('.modal-edituser').fadeIn();
+                    $('.bodymodal-edit').html(data.content);
+                    for (const [key, value] of Object.entries(data.array_usuario[0])) {
+                        const input = document.querySelector("[name='"+key+"']");
+                        if (input.type === 'radio') {
+                            const radioWithValue = document.querySelector(`[name='${key}'][value='${value}']`);
+                            if (radioWithValue) {
+                                radioWithValue.checked = true;
+                            }
+                        } else {
+                            input.value = value;
+                        }
+                    }
+
+                    // Populando as permissões 
+                    for (let index = 0; index < data.array_permissions.length; index++) {
+                        valuer = data.array_permissions[index].Cod_Tela;
+                        $('.frosupergroup input[name="'+valuer+'"]').prop('checked', 'checked');   
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Erro
+                    $('.loadercode').fadeOut();
+                    alert('Erro na requisição');
+                    console.log('Status: ' + status);
+                    console.log('Erro: ' + error);
+                }
+            });
+        }
+    </script>
+
+    
+{% endblock %} 

@@ -1,0 +1,182 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    Disponibilidade de professores
+{% endblock %}
+
+{% block content %}
+
+    <!-- Sidebar -->
+    <div class="flexo-dashboar">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-4 col-xl-3">
+                    {% include 'base/sidebar.html' %}
+                </div>
+                <div class="col-12 col-lg-8 col-xl-9">
+
+                    <div class="body-content-dashboard">
+                        {% if 7 in lista_permissoes_cod_tela %}
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="dash1-tab" data-bs-toggle="tab" data-bs-target="#dash1" type="button" role="tab" aria-controls="dash1" aria-selected="true"><i></i> Disponibilidade de professores</button>
+                            </li>
+                            <li class="nav-item text-sm" role="presentation">
+                                <button class="disabled nav-link" id="dash2-tab" data-bs-toggle="tab" data-bs-target="#dash2" type="button" role="tab" aria-controls="dash2" aria-selected="false"><i></i> Vídeo explicativo <small class="rounded-3xl ml-2 bg-[#fe932a] text-xs font-bold inline-block px-2">em breve</small></button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="fakeloader">
+                                <div class="centralloader">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" style="shape-rendering: auto; display: block;" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <g>
+                                            <circle cx="50" cy="50" r="32" stroke-width="8" stroke="#000000" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                                                <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                                            </circle>
+                                            <g></g>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade show active" id="dash1" role="tabpanel" aria-labelledby="dash1-tab">
+                                
+                                <form method="post" class="fm" action="{% url 'disponibilidade' id_configuracao=id_conf %}">
+                                    {% csrf_token %}
+                                    <div class="geralbody-dashboard">
+                                        {% for professor in professores %}
+                                            <div class="looper-days" id="id_{{ professor.Id_Professor }}">
+                                                <input type="hidden" name="idprofessor_{{ forloop.counter }}" value="{{ professor.Id_Professor }}">
+                                                <div class="header-looperdays">
+                                                    <div class="namelegend">
+                                                        <h3>{{ professor.Nome_Professor }}</h3>
+                                                        <div class="cahrtlegend">
+                                                            <span>Disponível</span>
+                                                            <span>Indisponível</span>
+                                                        </div>
+                                                    </div>
+                                                    <button type="button">+</button>
+                                                </div>
+                                                <div class="content-looperdays">
+                                                    <div class="header-calendar">
+                                                        {% for dia in dias %}
+                                                            <span>
+                                                                {{ dia.Nome_Dia }}
+                                                            </span>
+                                                        {% endfor %}
+                                                    </div>
+                                                    <div class="bodhy-calendar" data-lopperdays="{{ professor.Id_Professor }}">
+                                                        <input type="hidden" value="{{ momentos|length }}" name="qnt_momentos_{{ forloop.counter }}">
+                                                        {% for momento in momentos %}
+                                                            <div class="unicaline-momentos" id="id_{{ professor.Id_Professor }}_{{ momento.Id_Momento}}">
+                                                                <span class="name_momento">
+                                                                    {{ momento.Nome_Momento }}
+                                                                    <input type="hidden" name="id_momento_{{ forloop.counter }}_{{ forloop.parentloop.counter }}_{{ professor.Id_Professor }}" value="{{ momento.Id_Momento }}">
+                                                                </span>
+                                                                <div class="linedias_x_momentos">
+                                                                    <input type="hidden" value="{{ dias|length }}" name="qnt_dias_{{ forloop.parentloop.counter }}_{{ forloop.counter }}">
+                                                                    {% for dia in dias %}
+                                                                        <label class="radio" for="{{ forloop.counter }}_{{ forloop.parentloop.counter }}_{{ professor.Id_Professor }}">
+                                                                            <input type="checkbox" value="{{ dia.Id_Dia }}" name="dia_{{ forloop.counter }}_{{ forloop.parentloop.counter }}_{{ professor.Id_Professor }}" id="{{ forloop.counter }}_{{ forloop.parentloop.counter }}_{{ professor.Id_Professor }}">
+                                                                            <span class="outer"><span class="inner"></span>
+                                                                            </span>
+                                                                        </label>
+                                                                        <input type="hidden" value="{{ dia.Id_Dia }}" name="diatext_{{ forloop.counter }}_{{ forloop.parentloop.counter }}_{{ professor.Id_Professor }}">
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                    <div class="check_uncheck">
+                                                        <button type="button" onclick="checkun(1, {{ professor.Id_Professor }})">Selecionar todos</button>
+                                                        <button type="button" onclick="checkun(2, {{ professor.Id_Professor }})">Remover todos</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                        <input type="hidden" name="counter" id="counter" value="{{ professores|length }}">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="button-savestage">
+                                                    <button type="button" id="savetudo" onclick="checkDispon()">Salvar</button>
+                                                    <div class="error-name-profe"></div>
+                                                    <button type="submit" class="opacityabs" id="fakeclick">Salvar</button>
+                                                    <input type="text" class="opacityabs" name="d" id="d">
+                                                    <span id="receive_error"></span>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </form>
+
+
+                            </div>
+
+
+                            <div class="tab-pane fade" id="dash2" role="tabpanel" aria-labelledby="dash2-tab">...</div>
+                        </div>
+                        {% else %}
+                            <div class="nopermission_page">
+                                <i></i>
+                                <h2>Você não tem permissão<Br>para acessar essa página</h2>
+                                <a href="{% url 'administrativo' %}">Voltar a pagina inicial</a>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="hiddenfield-copy">
+                        
+                    </div>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>  
+
+
+    <script>
+        var dadosJson = {{ json_resultados|safe }}; 
+        // Objeto    para armazenar os grupos
+        var grupos = {};
+
+        // Iterar sobre o array original
+        for (var index = 0; index < dadosJson.length; index++) {
+            var elemento = dadosJson[index];
+            var idProfessor = elemento.fields.Id_Professor;
+
+            // Se o grupo ainda não existe, crie-o
+            if (!grupos[idProfessor]) {
+                grupos[idProfessor] = [];
+            }
+
+            // Adicione o elemento ao grupo correspondente
+            grupos[idProfessor].push(elemento);
+        }
+
+        // Converter o objeto de grupos de volta para um array
+        var arrayAgrupado = Object.values(grupos);
+
+        for (let i = 0; i < arrayAgrupado.length; i++) {
+            for (let x = 0; x < arrayAgrupado[i].length; x++) {
+                document.querySelectorAll('#id_'+arrayAgrupado[i][x].fields.Id_Professor).forEach(deus => {
+                    const momentos = deus.querySelector('#id_'+arrayAgrupado[i][x].fields.Id_Professor+'_'+arrayAgrupado[i][x].fields.Id_Momento); 
+                    // Obtém todos os campos filhos de 'momentos' que têm o valor desejado
+                    valores = arrayAgrupado[i][x].fields.Id_Dia.split('|');
+                    disponivel = arrayAgrupado[i][x].fields.Disponivel.split('|');
+                
+                    // Obtém todos os campos filhos de 'momentos' cujo valor está presente em 'valores'
+                    const camposFiltrados = momentos.querySelectorAll('[value]');
+
+                    // Itera sobre os campos filtrados e define o atributo 'checked' como true se o valor estiver presente em 'valores'
+                    camposFiltrados.forEach(campo => {
+                        if (valores.includes(campo.value)) {
+                            campo.checked = true;
+                        }
+                    });
+                });
+            }
+        }
+        
+    </script>
+    
+{% endblock %} 

@@ -1,0 +1,54 @@
+{% extends 'base/base.html' %}
+{% load poll_extras %}
+
+{% block title %}
+    Rodar Modelo
+{% endblock %}
+
+{% block content %}
+
+    <!-- Sidebar -->
+    <div class="flexo-dashboar">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-4 col-xl-3">
+                    {% include 'base/sidebar.html' %}
+                </div>
+                <div class="col-12 col-lg-8 col-xl-9">
+
+                    <div class="body-content-dashboard">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="dash1-tab" data-bs-toggle="tab" data-bs-target="#dash1" type="button" role="tab" aria-controls="dash1" aria-selected="true"><i></i> Relatórios</button>
+                            </li>
+                            <li class="nav-item text-sm" role="presentation">
+                                <button class="disabled nav-link" id="dash2-tab" data-bs-toggle="tab" data-bs-target="#dash2" type="button" role="tab" aria-controls="dash2" aria-selected="false"><i></i> Vídeo explicativo <small class="rounded-3xl ml-2 bg-[#fe932a] text-xs font-bold inline-block px-2">em breve</small></button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+
+                            {% if modelos_disponiveis %}
+                                <br>
+                                <div class="modelos_disponiveis">
+                                    <div class="bubblemodelos-disponveis">
+                                        <h3>Você tem relatórios disponíveis</h3>
+                                        <p>Clique no link abaixo para visualizar o relatório.</p>
+                                        <ul>
+                                            {% for modelo in modelos_disponiveis %}
+                                                <li><a href="{% url 'ver_relatorio' id_configuracao=id_conf id_rodada=modelo.Id_Rodada %}">Gerado em {{ modelo.data_registro }} </a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <div class="tab-pane fade" id="dash2" role="tabpanel" aria-labelledby="dash2-tab">...</div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %} 

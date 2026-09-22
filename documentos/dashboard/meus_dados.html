@@ -1,0 +1,54 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    Meus dados
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="divided_bloc">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-8">
+                    <div class="bubblebox_dash">
+                        <div class="header-bubblebox">
+                            <h2>Bem-vindo.</h2>
+                        </div>
+                        <div class="body-bubblebox">
+                            <p>Suas informações</p>
+                            <ul>
+                                <li><span>Sua escola:</span> {{ escolas.Nome_Escola }}</li>
+                                <li><span>Módulo:</span>  {{ escolas.Modulo_Contratado }}</li>
+                                <li><span>Data da contratação:</span> {{ escolas.Dt_Cotratacao|date:"d/m/Y"  }}</li>
+                                <li><span>Vigente até:</span> {{ escolas.Dt_Final_Cotratacao|date:"d/m/Y" }}</li>
+                            </ul>
+                            <a href="#">Solicitar alteração</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <div class="bubblebox_dash">
+                        <div class="header-bubblebox">
+                            <h3>Relatórios contratados</h3>
+                        </div>
+                        <div class="body-bubblebox">
+                            <p>Você contratou <span> {{ escolas.N_Rodadas_Contratadas }}</span> relatórios.</p>
+                            <a href="#">Contratar mais</a>
+                        </div>
+                    </div>
+                    <div class="bubblebox_dash">
+                        <div class="header-bubblebox">
+                            <h3>Relatórios disponíveis</h3>
+                        </div>
+                        <div class="body-bubblebox">
+                            <p>Você ainda tem <span>{{ n_restantes }}</span> relatórios disponíveis.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+{% endblock %} 

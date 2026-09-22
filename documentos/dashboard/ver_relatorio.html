@@ -1,0 +1,428 @@
+{% extends 'base/base.html' %}
+{% load poll_extras %}
+
+{% block title %}
+    Rodar Modelo
+{% endblock %}
+
+{% block content %}
+
+    <!-- Sidebar -->
+    <div class="flexo-dashboar">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-4 col-xl-3">
+                    {% include 'base/sidebar.html' %}
+                </div>
+                <div class="col-12 col-lg-8 col-xl-9">
+
+                    <div class="body-content-dashboard">
+                        {% if 9 in lista_permissoes_cod_tela %}
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="dash1-tab" data-bs-toggle="tab" data-bs-target="#dash1" type="button" role="tab" aria-controls="dash1" onclick="MONTA(0, 1)" aria-selected="true"><i></i> Solução 1</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="dash2-tab" data-bs-toggle="tab" data-bs-target="#dash2" type="button" role="tab" aria-controls="dash2" onclick="MONTA(1, 0)" aria-selected="false"><i></i> Solução 2</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="dash3-tab" data-bs-toggle="tab" data-bs-target="#dash3" type="button" role="tab" aria-controls="dash3" onclick="MONTA(2, 0)" aria-selected="false"><i></i> Solução 3</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="dash4-tab" data-bs-toggle="tab" data-bs-target="#dash4" type="button" role="tab" aria-controls="dash4" onclick="MONTA(3, 0)" aria-selected="false"><i></i> Solução 4</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade active show" id="dash1" role="tabpanel" aria-labelledby="dash1-tab">
+                                <div class="supertables-cronogridu" id="#grupo_0">
+                                    <div class="visualizacoes__boxes">
+                                        <div class="heading-visaulizacao">
+                                            <h3>Visualização por professor</h3>
+                                            <p>Selecione o professor</p>
+                                            <select class="professor_chosen" data-tablemix="tb1_0">
+                                                <option value="" selected>Todos</option>
+                                                {% for professores in professores_select %}
+                                                    <option value="{{ professores.Nome_Professor }}">{{ professores.Nome_Professor }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="body-visualizations">
+                                            <div class="unicacontent_tb_grid">
+                                                <div class="removee_all receive_table_professor_0 table-bodder"></div>
+                                                <div class="exporta-tb">
+                                                    <button onclick="exportarParaXLSX('tb1_0',  'Visualização por professor')">Exportar tabela</button>
+                                                </div>
+                                            </div>
+                                            <div class="unicacontent_tb_grid">
+                                                <span>Visualização de janelas por dia</span>
+                                                <div class="removee_all receive_table_janelas_0"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="visualizacoes__boxes">
+                                        <div class="heading-visaulizacao">
+                                            <h3>Visualização por turma</h3>
+                                            <p>Selecione a turma</p>
+                                            <select class="turma_chosen" data-tablemix="tb2_0">
+                                                <option value="" selected>Todas</option>
+                                                {% for turmas in turmas_select %}
+                                                    <option value="{{ turmas.Nome_Turma }}">{{ turmas.Nome_Turma }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="body-visualizations">
+                                            <div class="unicacontent_tb_grid">
+                                                <div class="receive_table_escola_0 table-bodder"></div>
+                                                <div class="exporta-tb">
+                                                    <button onclick="exportarParaXLSX('tb2_0',  'Visualização por turma')">Exportar tabela</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="dash2" role="tabpanel" aria-labelledby="dash2-tab">
+                                <div class="supertables-cronogridu" id="#grupo_1">
+                                    <div class="visualizacoes__boxes">
+                                        <div class="heading-visaulizacao">
+                                            <h3>Visualização por professor</h3>
+                                            <p>Selecione o professor</p>
+                                            <select class="professor_chosen" data-tablemix="tb1_1">
+                                                <option value="" selected>Todos</option>
+                                                {% for professores in professores_select %}
+                                                    <option value="{{ professores.Nome_Professor }}">{{ professores.Nome_Professor }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="body-visualizations">
+                                            <div class="unicacontent_tb_grid">
+                                                <div class="removee_all receive_table_professor_1 table-bodder"></div>
+                                                <div class="exporta-tb">
+                                                    <button onclick="exportarParaXLSX('tb1_1',  'Visualização por professor')">Exportar tabela</button>
+                                                </div>
+                                            </div>
+                                            <div class="unicacontent_tb_grid">
+                                                <span>Visualização de janelas por dia</span>
+                                                <div class="receive_table_janelas_1"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="visualizacoes__boxes">
+                                        <div class="heading-visaulizacao">
+                                            <h3>Visualização por turma</h3>
+                                            <p>Selecione a turma</p>
+                                            <select class="turma_chosen" data-tablemix="tb2_1">
+                                                <option value="" selected>Todas</option>
+                                                {% for turmas in turmas_select %}
+                                                    <option value="{{ turmas.Nome_Turma }}">{{ turmas.Nome_Turma }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="body-visualizations">
+                                            <div class="unicacontent_tb_grid">
+                                                <div class="receive_table_escola_1 table-bodder"></div>
+                                                <div class="exporta-tb">
+                                                    <button onclick="exportarParaXLSX('tb2_1',  'Visualização por turma')">Exportar tabela</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="dash3" role="tabpanel" aria-labelledby="dash3-tab">
+                                <div class="supertables-cronogridu" id="#grupo_3">
+                                    <div class="visualizacoes__boxes">
+                                        <div class="heading-visaulizacao">
+                                            <h3>Visualização por professor</h3>
+                                            <p>Selecione o professor</p>
+                                            <select class="professor_chosen" data-tablemix="tb1_2">
+                                                <option value="" selected>Todos</option>
+                                                {% for professores in professores_select %}
+                                                    <option value="{{ professores.Nome_Professor }}">{{ professores.Nome_Professor }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="body-visualizations">
+                                            <div class="unicacontent_tb_grid">
+                                                <div class="removee_all receive_table_professor_2 table-bodder"></div>
+                                                <div class="exporta-tb">
+                                                    <button onclick="exportarParaXLSX('tb1_2',  'Visualização por professor')">Exportar tabela</button>
+                                                </div>
+                                            </div>
+                                            <div class="unicacontent_tb_grid">
+                                                <span>Visualização de janelas por dia</span>
+                                                <div class="receive_table_janelas_2"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="visualizacoes__boxes">
+                                        
+                                        <div class="heading-visaulizacao">
+                                            <h3>Visualização por turma</h3>
+                                            <p>Selecione a turma</p>
+                                            <select class="turma_chosen" data-tablemix="tb2_2">
+                                                <option value="" selected>Todas</option>
+                                                {% for turmas in turmas_select %}
+                                                    <option value="{{ turmas.Nome_Turma }}">{{ turmas.Nome_Turma }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="body-visualizations">
+                                            <div class="unicacontent_tb_grid">
+                                                <div class="receive_table_escola_2 table-bodder"></div>
+                                                <div class="exporta-tb">
+                                                    <button onclick="exportarParaXLSX('tb2_2',  'Visualização por turma')">Exportar tabela</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
+
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="dash4" role="tabpanel" aria-labelledby="dash4-tab">
+                                <div class="supertables-cronogridu" id="#grupo_4">
+                                    <div class="visualizacoes__boxes">
+                                        <div class="heading-visaulizacao">
+                                            <h3>Visualização por professor</h3>
+                                            <p>Selecione o professor</p>
+                                            <select class="professor_chosen" data-tablemix="tb1_3">
+                                                <option value="" selected>Todos</option>
+                                                {% for professores in professores_select %}
+                                                    <option value="{{ professores.Nome_Professor }}">{{ professores.Nome_Professor }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="body-visualizations">
+                                            <div class="unicacontent_tb_grid">
+                                                <div class="removee_all receive_table_professor_3 table-bodder"></div>
+                                                <div class="exporta-tb">
+                                                    <button onclick="exportarParaXLSX('tb1_3',  'Visualização por professor')">Exportar tabela</button>
+                                                </div>
+                                            </div>
+                                            <div class="unicacontent_tb_grid">
+                                                <span>Visualização de janelas por dia</span>
+                                                <div class="receive_table_janelas_3"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="visualizacoes__boxes">
+                                        
+                                        <div class="heading-visaulizacao">
+                                            <h3>Visualização por turma</h3>
+                                            <p>Selecione a turma</p>
+                                            <select class="turma_chosen" data-tablemix="tb2_3">
+                                                <option value="" selected>Todas</option>
+                                                {% for turmas in turmas_select %}
+                                                    <option value="{{ turmas.Nome_Turma }}">{{ turmas.Nome_Turma }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="body-visualizations">
+                                            <div class="unicacontent_tb_grid">
+                                                <div class="receive_table_escola_3 table-bodder"></div>
+                                                <div class="exporta-tb">
+                                                    <button onclick="exportarParaXLSX('tb2_3',  'Visualização por turma')">Exportar tabela</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
+
+                                </div>
+                            </div>
+
+                        </div>
+                        {% else %}
+                            <div class="nopermission_page">
+                                <i></i>
+                                <h2>Você não tem permissão<Br>para acessar essa página</h2>
+                                <a href="{% url 'administrativo' %}">Voltar a pagina inicial</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% for modelo in modelos_disponiveis %}
+    <script>
+        // Começa por definir os jsons 
+        var df_visualizacao_escola = {{ modelo.df_visualizacao_escola|safe }};
+        var df_visualizacao_professores = {{ modelo.df_visualizacao_professores|safe }};
+        var df_resumo_janelas = {{ modelo.df_resumo_janelas|safe }};
+
+        // df_resumo_janelas.sort((a, b) => a.professor.localeCompare(b.professor));
+        df_resumo_janelas.forEach(subarray => {
+            subarray.sort((a, b) => {
+                const professorA = a.professor || ''; // Garantir que professor não seja undefined
+                const professorB = b.professor || ''; // Garantir que professor não seja undefined
+                return professorA.localeCompare(professorB);
+            });
+        });
+
+        console.log(df_resumo_janelas);
+
+        // Separa os indexos 
+        function MONTA(x, y){
+            $('.removee_all').html('');
+            
+            var df_visualizacao_escola_one = df_visualizacao_escola[x];
+            var df_visualizacao_professores_one = df_visualizacao_professores[x];
+            var df_resumo_janelas_one = df_resumo_janelas[x];
+
+            // Montar pro professor
+            const professoresElement = document.querySelector('.receive_table_professor_'+x);
+            const tbProfeElement = document.createElement('table');
+            const theadProfeElement = document.createElement('thead');
+            const tbodyProfeElement = document.createElement('tbody');
+            const theadtrProfeElement = document.createElement('tr');
+            tbProfeElement.className = 'table';
+            tbProfeElement.id = 'tb1_'+x;
+
+            const primeiroObjeto = df_visualizacao_professores_one[0];
+            for (const chave in primeiroObjeto) {
+                const tdhead_element = document.createElement('th');
+                tdhead_element.innerHTML = chave;
+                theadtrProfeElement.appendChild(tdhead_element); // Anexar o unicadia à div de dias
+            }
+
+            df_visualizacao_professores_one.forEach(objeto => {
+                const trElement = document.createElement('tr');
+                
+                for (const chave in objeto) {
+                    const tdElement = document.createElement('td');
+                    tdElement.textContent = objeto[chave];
+                    trElement.appendChild(tdElement);
+                }
+
+                tbodyProfeElement.appendChild(trElement);
+            });
+            
+            theadProfeElement.appendChild(theadtrProfeElement); 
+            tbProfeElement.appendChild(theadProfeElement); 
+            tbProfeElement.appendChild(tbodyProfeElement); 
+            professoresElement.appendChild(tbProfeElement); 
+
+
+            // Monta escola 
+            const escolaElement = document.querySelector('.receive_table_escola_'+x);
+            const tbEscolaElement = document.createElement('table');
+            const theadEscolaElement = document.createElement('thead');
+            const tbodyEscolaElement = document.createElement('tbody');
+            const theadtrEscolaElement = document.createElement('tr');
+            tbEscolaElement.className = 'table';
+            tbEscolaElement.id = 'tb2_'+x;
+
+            const segundoObjeto = df_visualizacao_escola_one[0];
+            for (const chave in segundoObjeto) {
+                const tdhead_element = document.createElement('th');
+                tdhead_element.innerHTML = chave;
+                theadtrEscolaElement.appendChild(tdhead_element); // Anexar o unicadia à div de dias
+            }
+
+            df_visualizacao_escola_one.forEach(objeto => {
+                const trElement = document.createElement('tr');
+                
+                for (const chave in objeto) {
+                    const tdElement = document.createElement('td');
+                    tdElement.textContent = objeto[chave];
+                    trElement.appendChild(tdElement);
+                }
+
+                tbodyEscolaElement.appendChild(trElement);
+            });
+
+            theadEscolaElement.appendChild(theadtrEscolaElement); 
+            tbEscolaElement.appendChild(theadEscolaElement); 
+            tbEscolaElement.appendChild(tbodyEscolaElement); 
+            escolaElement.appendChild(tbEscolaElement);
+
+            // Montar as janelas 
+            let array_janelas = {};
+            const windowsElement = document.querySelector('.receive_table_janelas_'+x);
+            for (let i = 0; i < df_resumo_janelas_one.length; i++) {
+                const resultado = df_resumo_janelas_one[i];
+                const { professor } = resultado;
+
+                if (!array_janelas[professor]) {
+                    array_janelas[professor] = [];
+                }
+
+                array_janelas[professor].push(resultado);
+            }
+            for (const loop_janelas in array_janelas) {
+            const professorElement = document.createElement('div');
+            professorElement.className = 'uniocapessoa pessoaunica_'+loop_janelas;
+            professorElement.innerHTML = '<div class="ttilepersona"><h3>' + loop_janelas + '</h3></div>';
+
+            const professores = array_janelas[loop_janelas];
+            const diasElement = document.createElement('div'); // Criar a div para agrupar os elementos unicadia
+            diasElement.className = 'grids-itens';
+            for (const resultado of professores) {
+                const diaElement = document.createElement('div');
+                diaElement.className = 'unicadia';
+                diaElement.innerHTML = '<span>' + resultado.dia + '</span><p>' + resultado.janelas + '</p>';
+                diasElement.appendChild(diaElement); // Anexar o unicadia à div de dias
+            }
+
+            professorElement.appendChild(diasElement); 
+            windowsElement.appendChild(professorElement);
+        }
+
+            
+
+            $.fn.dataTable.ext.errMode = 'none';
+            // Monta datable 
+            $('#tb1_'+x+', #tb2_'+x+'').DataTable({
+                //disable sorting on last column
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/2.0.2/i18n/pt-BR.json',
+                },
+            });
+            
+        }
+        
+        MONTA(0, 1)
+        
+
+        // Filtro pelo select 
+        $('.turma_chosen, .professor_chosen').on('change', function(){
+            var table_muda = $(this).data('tablemix');
+            var table = $('#'+table_muda).DataTable();
+            var valor_filtro = $(this).val();
+
+            // Para filtrar a coluna específica, substitua 'index_coluna' pelo índice da coluna desejada (começando de 0) e 'valor_filtro' pelo valor que você deseja filtrar
+            table.column(0).search(valor_filtro).draw();
+
+            if($(this).hasClass('professor_chosen')){
+                if(valor_filtro == ''){
+                    $('.uniocapessoa').fadeIn();
+                }
+                else{
+                    $('.uniocapessoa').fadeOut();
+                    $('.pessoaunica_'+valor_filtro).fadeIn();
+                }
+            }
+        });
+
+    </script>
+    {% endfor %}
+    
+{% endblock %} 
+
+
+
