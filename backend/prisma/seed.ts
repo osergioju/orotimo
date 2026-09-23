@@ -96,7 +96,7 @@ async function main() {
   await prisma.schedule.createMany({
     data: [
       { schoolId: schoolAbc.id, name: 'Grade 2027', period: 'Anual', academicYear: '2027', status: 'draft' },
-      { schoolId: schoolAbc.id, name: 'Grade 2026', period: 'Anual', academicYear: '2026', status: 'generated' },
+      { schoolId: schoolAbc.id, name: 'Grade 2026', period: 'Anual', academicYear: '2026', status: 'draft' },
     ],
   })
 
@@ -189,6 +189,66 @@ async function main() {
       emailNotifications: false,
     },
   })
+  const camila = await prisma.teacher.create({
+    data: {
+      schoolId: schoolAbc.id,
+      name: 'Profa. Camila Santos',
+      email: 'camila.santos@escolaabc.com.br',
+      unit: 'Escola ABC · Sede',
+      subjects: ['Português'],
+      contractType: 'CLT',
+      maxWeeklyClasses: 20,
+      preferredShift: 'Manhã',
+      twinClasses: false,
+      avoidGaps: true,
+      emailNotifications: true,
+    },
+  })
+  const diego = await prisma.teacher.create({
+    data: {
+      schoolId: schoolAbc.id,
+      name: 'Prof. Diego Alves',
+      email: 'diego.alves@escolaabc.com.br',
+      unit: 'Escola ABC · Sede',
+      subjects: ['Inglês'],
+      contractType: 'PJ',
+      maxWeeklyClasses: 8,
+      preferredShift: 'Manhã',
+      twinClasses: false,
+      avoidGaps: false,
+      emailNotifications: false,
+    },
+  })
+  const eduardo = await prisma.teacher.create({
+    data: {
+      schoolId: schoolAbc.id,
+      name: 'Prof. Eduardo Nascimento',
+      email: 'eduardo.nascimento@escolaabc.com.br',
+      unit: 'Escola ABC · Sede',
+      subjects: ['Matemática', 'Física'],
+      contractType: 'CLT',
+      maxWeeklyClasses: 20,
+      preferredShift: 'Tarde',
+      twinClasses: true,
+      avoidGaps: true,
+      emailNotifications: false,
+    },
+  })
+  const gabriela = await prisma.teacher.create({
+    data: {
+      schoolId: schoolAbc.id,
+      name: 'Profa. Gabriela Rocha',
+      email: 'gabriela.rocha@escolaabc.com.br',
+      unit: 'Escola ABC · Sede',
+      subjects: ['Química', 'Biologia'],
+      contractType: 'Temporário',
+      maxWeeklyClasses: 16,
+      preferredShift: 'Tarde',
+      twinClasses: false,
+      avoidGaps: false,
+      emailNotifications: false,
+    },
+  })
 
   // Disponibilidades desenhadas para que a carga horária atribuída a cada turma
   // (ver "Criando atribuições" abaixo) preencha exatamente sua disponibilidade
@@ -196,35 +256,66 @@ async function main() {
   console.log('Criando disponibilidade de professores...')
   await prisma.teacherAvailabilitySlot.createMany({
     data: [
-      // Ana e Bia: disponíveis Seg/Ter/Qua em todos os momentos (superset da 7º Ano A)
-      ...buildAvailability('teacherId', ana.id, slotIds, ['11100', '11100', '11100', '11100', '11100']),
-      ...buildAvailability('teacherId', bia.id, slotIds, ['11100', '11100', '11100', '11100', '11100']),
-      // Carlos: disponível Seg/Ter em todos os momentos (superset da 8º Ano B)
-      ...buildAvailability('teacherId', carlos.id, slotIds, ['11000', '11000', '11000', '11000', '11000']),
+      // Ana, Carlos, Bia, Eduardo e Gabriela: disponíveis a semana inteira (Seg-Sex), todos os momentos.
+      ...buildAvailability('teacherId', ana.id, slotIds, ['11111', '11111', '11111', '11111', '11111']),
+      ...buildAvailability('teacherId', carlos.id, slotIds, ['11111', '11111', '11111', '11111', '11111']),
+      ...buildAvailability('teacherId', bia.id, slotIds, ['11111', '11111', '11111', '11111', '11111']),
+      ...buildAvailability('teacherId', eduardo.id, slotIds, ['11111', '11111', '11111', '11111', '11111']),
+      ...buildAvailability('teacherId', gabriela.id, slotIds, ['11111', '11111', '11111', '11111', '11111']),
+      // Camila: só disponibilizou Seg/Ter/Qua (todos os momentos) — 15 horários/semana.
+      ...buildAvailability('teacherId', camila.id, slotIds, ['11100', '11100', '11100', '11100', '11100']),
+      // Diego: preencheu disponibilidade quase vazia — só 3 horários na semana toda.
+      ...buildAvailability('teacherId', diego.id, slotIds, ['11000', '10000', '00000', '00000', '00000']),
     ],
   })
 
   console.log('Criando disponibilidade de turmas...')
   await prisma.classAvailabilitySlot.createMany({
     data: [
-      // 7º Ano A: Seg/Ter completos + Qua (Aula 1-3) = 13 aulas/semana (Matemática 5 + Física 3 + Química 3 + Biologia 2)
-      ...buildAvailability('classId', turma7a.id, slotIds, ['11100', '11100', '11100', '11000', '11000']),
-      // 8º Ano B: Seg/Ter (Aula 1-2) = 4 aulas/semana (História 2 + Geografia 2)
-      ...buildAvailability('classId', turma8b.id, slotIds, ['11000', '11000', '00000', '00000', '00000']),
-      // 1º Ano EM: sem disponibilidade cadastrada ainda (sem atribuições nesta demo)
-      ...buildAvailability('classId', turmaEm.id, slotIds, ['00000', '00000', '00000', '00000', '00000']),
+      // 7º Ano A e 8º Ano B: semana cheia menos Quinta/Aula 5 = 24 aulas/semana (bate com o currículo completo).
+      ...buildAvailability('classId', turma7a.id, slotIds, ['11111', '11111', '11111', '11111', '11101']),
+      ...buildAvailability('classId', turma8b.id, slotIds, ['11111', '11111', '11111', '11111', '11101']),
+      // 1º Ano EM: mesma grade "padrão" de 24 aulas/semana — mas o currículo abaixo só usa 22
+      // (faltou atribuir um professor de Inglês), então o total cadastrado não bate com a
+      // disponibilidade da turma.
+      ...buildAvailability('classId', turmaEm.id, slotIds, ['11111', '11111', '11111', '11111', '11101']),
     ],
   })
 
   console.log('Criando atribuições (professor x turma x disciplina)...')
   await prisma.assignment.createMany({
     data: [
-      { schoolId: schoolAbc.id, classId: turma7a.id, subjectId: matematica.id, teacherId: ana.id, weeklyMinClasses: 5, dailyMaxClasses: 3 },
-      { schoolId: schoolAbc.id, classId: turma7a.id, subjectId: fisica.id, teacherId: ana.id, weeklyMinClasses: 3, dailyMaxClasses: 3 },
+      // 7º Ano A — currículo completo (24 aulas/semana), sem inconsistências.
+      { schoolId: schoolAbc.id, classId: turma7a.id, subjectId: matematica.id, teacherId: ana.id, weeklyMinClasses: 5, dailyMaxClasses: 2 },
+      { schoolId: schoolAbc.id, classId: turma7a.id, subjectId: fisica.id, teacherId: ana.id, weeklyMinClasses: 3, dailyMaxClasses: 2 },
       { schoolId: schoolAbc.id, classId: turma7a.id, subjectId: quimica.id, teacherId: bia.id, weeklyMinClasses: 3, dailyMaxClasses: 2 },
       { schoolId: schoolAbc.id, classId: turma7a.id, subjectId: biologia.id, teacherId: bia.id, weeklyMinClasses: 2, dailyMaxClasses: 2 },
+      { schoolId: schoolAbc.id, classId: turma7a.id, subjectId: historia.id, teacherId: carlos.id, weeklyMinClasses: 2, dailyMaxClasses: 2 },
+      { schoolId: schoolAbc.id, classId: turma7a.id, subjectId: geografia.id, teacherId: carlos.id, weeklyMinClasses: 2, dailyMaxClasses: 2 },
+      { schoolId: schoolAbc.id, classId: turma7a.id, subjectId: portugues.id, teacherId: camila.id, weeklyMinClasses: 5, dailyMaxClasses: 2 },
+      { schoolId: schoolAbc.id, classId: turma7a.id, subjectId: ingles.id, teacherId: diego.id, weeklyMinClasses: 2, dailyMaxClasses: 2 },
+
+      // 8º Ano B — currículo completo (24 aulas/semana), mas com 2 pequenos erros de cadastro:
+      // Português com máximo diário de 1 aula (Camila não consegue cobrir 5 aulas/semana só
+      // com 3 dias disponíveis e 1 aula/dia) e Inglês dependendo do Diego, que quase não deu
+      // disponibilidade.
+      { schoolId: schoolAbc.id, classId: turma8b.id, subjectId: matematica.id, teacherId: ana.id, weeklyMinClasses: 5, dailyMaxClasses: 2 },
+      { schoolId: schoolAbc.id, classId: turma8b.id, subjectId: fisica.id, teacherId: ana.id, weeklyMinClasses: 3, dailyMaxClasses: 2 },
+      { schoolId: schoolAbc.id, classId: turma8b.id, subjectId: quimica.id, teacherId: bia.id, weeklyMinClasses: 3, dailyMaxClasses: 2 },
+      { schoolId: schoolAbc.id, classId: turma8b.id, subjectId: biologia.id, teacherId: bia.id, weeklyMinClasses: 2, dailyMaxClasses: 2 },
       { schoolId: schoolAbc.id, classId: turma8b.id, subjectId: historia.id, teacherId: carlos.id, weeklyMinClasses: 2, dailyMaxClasses: 2 },
       { schoolId: schoolAbc.id, classId: turma8b.id, subjectId: geografia.id, teacherId: carlos.id, weeklyMinClasses: 2, dailyMaxClasses: 2 },
+      { schoolId: schoolAbc.id, classId: turma8b.id, subjectId: portugues.id, teacherId: camila.id, weeklyMinClasses: 5, dailyMaxClasses: 1 },
+      { schoolId: schoolAbc.id, classId: turma8b.id, subjectId: ingles.id, teacherId: diego.id, weeklyMinClasses: 2, dailyMaxClasses: 2 },
+
+      // 1º Ano EM — falta a atribuição de Inglês (22 de 24 aulas cadastradas).
+      { schoolId: schoolAbc.id, classId: turmaEm.id, subjectId: matematica.id, teacherId: eduardo.id, weeklyMinClasses: 5, dailyMaxClasses: 2 },
+      { schoolId: schoolAbc.id, classId: turmaEm.id, subjectId: fisica.id, teacherId: eduardo.id, weeklyMinClasses: 3, dailyMaxClasses: 2 },
+      { schoolId: schoolAbc.id, classId: turmaEm.id, subjectId: quimica.id, teacherId: gabriela.id, weeklyMinClasses: 3, dailyMaxClasses: 2 },
+      { schoolId: schoolAbc.id, classId: turmaEm.id, subjectId: biologia.id, teacherId: gabriela.id, weeklyMinClasses: 2, dailyMaxClasses: 2 },
+      { schoolId: schoolAbc.id, classId: turmaEm.id, subjectId: historia.id, teacherId: carlos.id, weeklyMinClasses: 2, dailyMaxClasses: 2 },
+      { schoolId: schoolAbc.id, classId: turmaEm.id, subjectId: geografia.id, teacherId: carlos.id, weeklyMinClasses: 2, dailyMaxClasses: 2 },
+      { schoolId: schoolAbc.id, classId: turmaEm.id, subjectId: portugues.id, teacherId: camila.id, weeklyMinClasses: 5, dailyMaxClasses: 2 },
     ],
   })
 
