@@ -1,0 +1,187 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    Cronogrid
+{% endblock %}
+
+{% block content %}
+
+    <!-- Startscreen - Tela com as configurações iniciais -->    
+    <div class="startscreen">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="heading-startscreen">
+                        <a href="#"></a>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="center-startscreen">
+                        <div class="heading_start">
+                            <h2>Selecione uma opção</h2>
+                            <ul>
+                                {% for configuracao in configuracoes %}
+                                    {% if configuracao.Id_Unidade == id_unidade_get.Id_Unidade %}
+                                        <li>
+                                            <a href="{% url 'turmas' id_configuracao=configuracao.Id_Configuracao %}">
+                                                <b>{{ configuracao.Titulo_Configuracao }}</b> 
+                                                {{ configuracao.Desc_Configuracao }} | {{ configuracao.Momento_Execucao|date:"d/m/Y H:i" }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="heading_start">
+                            <h2>Ou, crie uma nova configuração</h2>
+                            <div class="form_create_startscreen">
+                                <form method="post" action="{% url 'inicio' id_escola=escolas.Id_Escola %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="idescola" id="" value="{{ escolas.Id_Escola }}">
+                                    <input type="hidden" name="nm_escola" value="{{ escolas.Nome_Escola }}">
+                                    <input type="hidden" name="txt_unidade" id="r_1" value="">
+                                    <input type="hidden" name="txt_periodo" id="r_2" value="">
+                                    <label for="3">
+                                        Dê um nome para essa configuração
+                                        <input type="text" name="nm_config" id="3" value="">
+                                    </label>
+                                    <label for="1">
+                                        Unidade
+                                        <select name="unidade" id="1" onchange="gtvalue(this)">
+                                            <option selected disabled>--</option>
+                                            {% for unidade in unidades %}
+                                                <option value="{{ unidade.Id_Unidade }}" data-title="{{ unidade.Nome_Unidade }}">{{ unidade.Nome_Unidade }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </label>
+                                    <label for="2">
+                                        Período
+                                        <select name="periodo" id="2" onchange="gtvalue(this)">
+                                            <option selected disabled>--</option>
+                                            {% for periodo in periodos %}
+                                                <option value="{{ periodo.Id_Periodo }}" data-title="{{ periodo.Nome_Periodo }}">{{ periodo.Nome_Periodo }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </label>
+                                    
+                                    <div class="sendbty">
+                                        <button type="submit">Cadastrar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Sidebar -->
+     <div class="flexo-dashboar">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-4 col-xl-3">
+                    <div class="sidebar-sys">
+                        <button id="opensidebar">Menu i</button>
+                        <div class="supergroup-sidebar">
+                            <div class="heading-sidebar">
+                                <div class="button-sidebar">
+                                    <button type="button"><i></i> Importar</button>
+                                </div>
+                            </div>
+                            <div class="chosenclass-sidebar">
+                                <h2 class="title_sidebar">
+                                    
+                                </h2>
+                                <a href="">Selecionar outra</a>
+                                <div class="form-chosen">
+                                    <!-- 
+                                    <label for="1">
+                                        Unidade
+                                        <select name="" id="1">
+                                            <option value="1">Unidade 1</option>
+                                            <option value="2">Unidade 2</option>
+                                        </select>
+                                    </label>
+                                    <label for="2">
+                                        Período
+                                        <select name="" id="2">
+                                            <option value="1">Período 1</option>
+                                            <option value="2">Período 2</option>
+                                        </select>
+                                    </label>
+                                    -->
+                                </div>
+                            </div>
+                            <div class="navbar-sidebar">
+                                <ul>
+                                    <li><a href="#"><i></i> <span>Turmas</span></a></li>
+                                    <li><a href="#"><i></i> <span>Momentos</span></a></li>
+                                    <li><a href="#"><i></i> <span>Dias</span></a></li>
+                                    <li><a href="#"><i></i> <span>Matérias</span></a></li>
+                                    <li><a href="#"><i></i> <span>Professores</span></a></li>
+                                    <li><a href="#"><i></i> <span>Disponibilidade de professores</span></a></li>
+                                </ul>
+                            </div>
+                            <div class="footer-sidebar">
+                                <h2 class="title_sidebar">
+                                    Rodar
+                                </h2>
+                                <div class="button-sidebar">
+                                    <button type="button" disabled><i></i> Modelo</button>
+                                    <button type="button"><i></i> Relatórios</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-8 col-xl-9">
+
+                    <div class="body-content-dashboard">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="dash1-tab" data-bs-toggle="tab" data-bs-target="#dash1" type="button" role="tab" aria-controls="dash1" aria-selected="true"><i></i> Turmas</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="dash2-tab" data-bs-toggle="tab" data-bs-target="#dash2" type="button" role="tab" aria-controls="dash2" aria-selected="false"><i></i> Vídeo explicativo</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="dash1" role="tabpanel" aria-labelledby="dash1-tab">
+                                <div class="geralbody-dashboard">
+                                    <div class="chosen_quantity">
+                                        <label for="1">
+                                            Quantidade de turmas
+                                            <div class="button-incrasedecesase">
+                                                <button type="button" onclick="incredec('down')">-</button>
+                                                <input type="text" class="receive_val" value="0">
+                                                <button type="button"  onclick="incredec('up')">+</button>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="bodyfields">
+                                        <div class="repeaterbody-fields">
+                                            <div id="repeaterbody-line" class="row"></div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="button-savestage">
+                                                        <button type="button">Salvar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="dash2" role="tabpanel" aria-labelledby="dash2-tab">...</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+
+{% endblock %} 

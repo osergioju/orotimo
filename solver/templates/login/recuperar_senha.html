@@ -1,0 +1,104 @@
+{% extends 'base/baselogin.html' %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+    {% csrf_token %}
+    <div class="superguide_login">
+        <div class="row g-0">
+            <div class="col-12">
+                <div class="centralform-login">
+                    <div class="centerlogin-fristacess">
+                        <div class="bubblelogin-form">
+                            <div class="loadercode">
+                                <div class="cetnerdloadercode">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" style="shape-rendering: auto; display: block;" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <g>
+                                            <circle cx="50" cy="50" r="32" stroke-width="8" stroke="#000000" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                                                <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                                            </circle>
+                                            <g></g>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="alimente__json">
+                                <div class="header-loggin-form">
+                                    <h2>Recupere sua senha</h2>
+                                    <p>Será enviado ao e-mail cadastrado um código de 6 dígitos para confirmar o seu acesso, depois, escolha sua nova senha.</p>
+                                </div>
+                                <div class="body-loggin-form">
+                                    <div class="formg_login_first">
+                                        <label for="2">
+                                            Digite o seu e-mail
+                                            <input type="email" name="email" id="1">
+                                        </label>
+                                    </div>
+                                    <div class="formg_login_first btn_inside-form">
+                                        <button onclick="getConfirm('mailrequest')" type="submit">Solicitar código</button>
+                                    </div>
+                                    <span class="content_receiver"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Reenviar o código 
+        function getConfirm(x){
+            $('.loadercode').fadeIn();
+            $('.content_receiver').html();
+            var csrfToken = $('input[name="csrfmiddlewaretoken"]').val(); 
+            acao = x;
+            value = $('#1').val();
+            $.ajax({
+                type: 'POST',
+                url: '{% url "recuperar_senha" %}', 
+                data : {
+                    csrfmiddlewaretoken: csrfToken, 
+                    acao : acao,
+                    value : value
+                },
+                success: function(data) {
+                    $('.loadercode').fadeOut();
+                    console.log(data.showmessage);
+                    if(data.showmessage == false){
+                        $('.alimente__json').html(data.content);
+                        inputCode();
+                        validarSenha();
+                    }
+                    else{
+                        $('.content_receiver').html("<span>"+data.content+"</span>");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Erro
+                    $('.loadercode').fadeOut();
+                    alert('Erro na requisição');
+                    console.log('Status: ' + status);
+                    console.log('Erro: ' + error);
+                }
+            });
+        }
+
+
+        // Não deixar iputar texto
+        function inputCode(){
+            $('.confirma__code').on('input', function() {
+                // Remover caracteres não numéricos
+                $(this).val($(this).val().replace(/\D/g, ''));
+            });
+        }
+
+        
+       
+        
+    </script>
+{% endblock %} 
+

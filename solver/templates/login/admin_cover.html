@@ -1,0 +1,80 @@
+{% extends 'base/baselogin.html' %}
+
+{% block title %}
+    Página inicial
+{% endblock %}
+
+{% block content %}
+        
+    <div class="admin-cover">
+        <div class="heading-adm-cover">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-4 order-lg-2">
+                        <div class="brando-">
+                            <a href="#"></a>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-4  order-lg-1">
+                        <span id="name_suer">Olá, {{ nome_user }}.</span>
+                    </div>
+                    <div class="col-6 col-lg-4  order-lg-3">
+                        <div class="flex-settings">
+                            {% if admin_status == 0 %}
+                            <a href="{% url 'dash_inicial' id_escola=id_escola %}">Configurações</a>
+                            {% endif %}
+                            <a href="{% url 'sair_comom' %}">Sair</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="body-admin-cover">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="centerbody-adm-cover">
+                            <div class="bd-heading-adm-cover">
+                                <h2>Acesse aqui seus <b>produtos</b></h2>
+                            </div>
+                            <div class="bd-adm-cover">
+                                <div class="row justify-content-center">
+                                    <div class="col-6 col-lg-4 col-xl-3">
+                                        <div class="iunicasolution-math">
+                                            <div class="icon_solution">
+                                                <i></i>
+                                            </div>
+                                            <h3>Crono<b>grid</b></h3>
+                                            <a href="{% url 'inicio' id_escola=id_escola %}"> Acessar </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-4 col-xl-3">
+                                        <div class="disabled iunicasolution-math">
+                                            <div class="icon_solution">
+                                                <i></i>
+                                            </div>
+                                            <h3>creative<b>cam</b></h3>
+                                            <a href="#">Acessar</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-4 col-xl-3">
+                                        <div class="disabled iunicasolution-math">
+                                            <div class="icon_solution">
+                                                <i></i>
+                                            </div>
+                                            <h3>produto 3</h3>
+                                            <a href="#">Acessar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %} 
+
+

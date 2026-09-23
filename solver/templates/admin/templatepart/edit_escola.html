@@ -1,0 +1,61 @@
+<div class="minimodal">
+    <form action="#">
+        <input type="hidden" name="Id_Escola">
+        <div class="formg_math">
+            <label for="1">
+                Nome da Escola
+                <input type="text" name="Nome_Escola" required>
+            </label>
+        </div>
+        <div class="formg_math">
+            <label for="2">
+                Módulo contratado
+                <select name="Modulo_Contratado" id="2" required>
+                    <option value="Cronogrid">Cronogrid</option>
+                </select>
+            </label>
+        </div>
+        <div class="formg_math">
+            <label for="3">
+                Data da contratação
+                <input type="date" id="3" name="Dt_Cotratacao" required>
+            </label>
+        </div>
+        <div class="formg_math">
+            <label for="4">
+                Data final da contratação
+                <input type="date" id="4" name="Dt_Final_Cotratacao" required>
+            </label>
+        </div>
+        <div class="formg_math">
+            <label for="5">
+                Número de rodadas contratadas
+                <input type="text" id="5" name="N_Rodadas_Contratadas" required>
+            </label>
+        </div>
+        <div class="formg_math">
+            <label for="5">
+                Número de rodadas utilizadas
+                <input type="text" id="5" name="N_Rodadas_Utilizadas" required>
+            </label>
+        </div>
+
+        <div class="formg_math">
+            <label for="3">
+                Status
+                <label for="3_a">
+                    <input type="radio" name="Is_Ativo" value="1">
+                    Ativo
+                </label>
+                <label for="3_a">
+                    <input type="radio" name="Is_Ativo" value="0">
+                    Inativo
+                </label>
+            </label>
+        </div>
+
+        <div class="formg_math">
+            <button onclick="actionAtualiza(1)" type="button">Atualizar</button>
+        </div>
+    </form>
+</div>

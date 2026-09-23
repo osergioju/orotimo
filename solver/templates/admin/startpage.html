@@ -1,0 +1,39 @@
+{% extends 'admin/baseadmin.html' %}
+
+{% block title %}
+    Admin - Página Inicial
+{% endblock %}
+
+{% block content %}
+
+    <div class="allproducts">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="header-allprodcs">
+                        <h3>Selecione o produto</h3>
+                    </div>
+                    <div class="geraltabs-produtos__adm">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Cronogrid</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <div class="geralbuttons-actions">
+                                    <a href="{% url 'new_escola' %}">Cadastrar escola</a>
+                                    <a href="{% url 'new_unidade' %}">Cadastrar unidade</a>
+                                    <a href="{% url 'new_user' %}">Cadastrar usuários</a>
+                                    <a href="{% url 'listar_tudo' %}">Listar tudo</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %} 

@@ -1,0 +1,28 @@
+<!-- meuapp/templates/header.html -->
+<header>
+    <div class="heading-adm-cover">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-4 order-lg-2">
+                    <div class="brando-">
+                        <a href="#"></a>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-4  order-lg-1">
+                    <div class="link_starten">
+                        <a href="{% url 'administrativo' %}">Olá {{ nome_user }} | Página Inicial</a>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-4  order-lg-3">
+                    <div class="flex-settings">
+                        {% if admin_status == 0 %}
+                            <a href="{% url 'dash_inicial' id_escola=id_escola_url.Id_Escola %}">Configurações</a>
+                        {% endif %}
+                        <a href="{% url 'sair_comom' %}" class="logoubtn">Sair</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+ 

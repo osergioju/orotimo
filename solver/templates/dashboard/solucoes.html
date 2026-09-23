@@ -1,0 +1,42 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    Dashboard - Soluções
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="divided_bloc">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-12">
+                    <div class="bubblebox_dash">
+                        <div class="header-bubblebox">
+                            <h2>Soluções de {{ escolas.Nome_Escola }}.</h2>
+                        </div>
+                        <div class="body-solutions">
+                            {% if configuracoes|length == 0 %}
+                                <p>Você ainda não tem uma solução criada</p>
+                                <a href="{% url 'inicio' id_escola=id_escola %}">Criar uma nova</a>
+                            {% else %}  
+                                <p>Clique numa solução abaixo ou crie uma nova</p>
+                                <div class="solutions_guide">
+                                    <div class="header-solutions">
+                                        <h3>Soluções criadas</h3>
+                                    </div>
+                                    {% for configuracao in configuracoes %}
+                                        <a href="{% url 'turmas' id_configuracao=configuracao.Id_Configuracao %}">{{ configuracao.Desc_Configuracao }} | {{ configuracao.Momento_Execucao }}</a>
+                                    {% endfor %}
+                                </div>
+                                <a class="new-solution" href="{% url 'inicio' id_escola=id_escola %}">Criar nova solução</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+{% endblock %} 

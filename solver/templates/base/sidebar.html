@@ -1,0 +1,68 @@
+<div class="sidebar-sys">
+    <button id="opensidebar">Menu i</button>
+    <div class="supergroup-sidebar">
+        <!-- 
+        <div class="heading-sidebar">
+            <div class="button-sidebar">
+                <button type="button"><i></i> Importar</button>
+            </div>
+        </div>
+        -->
+        <div class="chosenclass-sidebar">
+            <h2 class="title_sidebar">
+                {{ get_config.Titulo_Configuracao }}
+                <span>{{ get_config.Desc_Configuracao }}</span>
+            </h2>
+            <a href="{% url 'inicio' id_escola=objconfig.Id_Escola %}">Selecionar outra</a>
+            <div class="form-chosen">
+                <!-- 
+                <label for="1">
+                    Unidade
+                    <select name="" id="1">
+                        <option value="1">Unidade 1</option>
+                        <option value="2">Unidade 2</option>
+                    </select>
+                </label>
+                <label for="2">
+                    Período
+                    <select name="" id="2">
+                        <option value="1">Período 1</option>
+                        <option value="2">Período 2</option>
+                    </select>
+                </label>
+                -->
+            </div>
+        </div>
+        <div class="navbar-sidebar">
+            <ul> 
+                <li data-mylink="1" class="bnt_permission {% if admin_status != 0 %} disabled_permission {% endif %} {% if 'turmas' in request.path %}ativo{% endif %}"><a href="{% url 'turmas' id_configuracao=id_conf %}"><i></i> <span>Turmas</span></a></li>
+                <li data-mylink="2" class="bnt_permission {% if admin_status != 0 %} disabled_permission {% endif %} {% if 'momentos' in request.path %}ativo{% endif %}"><a href="{% url 'momentos' id_configuracao=id_conf %}"><i></i> <span>Momentos</span></a></li>
+                <li data-mylink="3" class="bnt_permission {% if admin_status != 0 %} disabled_permission {% endif %} {% if 'dias' in request.path %}ativo{% endif %}"><a href="{% url 'dias' id_configuracao=id_conf %}"><i></i> <span>Dias</span></a></li>
+
+                <li data-mylink="4" class="bnt_permission {% if admin_status != 0 %} disabled_permission {% endif %} {% if countess.Turmas_Count < 1 %} disable__link {% endif %} {% if 'materias' in request.path %}ativo{% endif %}"><a href="{% url 'materias' id_configuracao=id_conf %}"><i></i> <span>Matérias</span></a></li>
+                <li data-mylink="5" class="bnt_permission {% if admin_status != 0 %} disabled_permission {% endif %} {% if countess.Turmas_Count < 1 or countess.Materias_Count < 1 %} disable__link {% endif %} {% if 'professores' in request.path %}ativo{% endif %}"><a href="{% url 'professores' id_configuracao=id_conf %}"><i></i> <span>Professores</span></a></li>
+                <li data-mylink="6" class="bnt_permission {% if admin_status != 0 %} disabled_permission {% endif %} {% if countess.Turmas_Count < 1 or countess.Dias_Count < 1 or countess.Momentos_Count < 1 %} disable__link {% endif %} {% if 'disponbilidade-td' in request.path %}ativo{% endif %}"><a href="{% url 'disponbilidade_td' id_configuracao=id_conf %}"><i></i> <span>Disponbilidade de turmas</span></a></li>
+                <li data-mylink="7" class="bnt_permission {% if admin_status != 0 %} disabled_permission {% endif %} {% if countess.Professores_Count < 1 or countess.Dias_Count < 1 or countess.Momentos_Count < 1 %} disable__link {% endif %} {% if 'disponibilidade' in request.path %}ativo{% endif %}"><a href="{% url 'disponibilidade' id_configuracao=id_conf %}"><i></i> <span>Disponibilidade de professores</span></a></li>
+            </ul>
+        </div>
+        <div class="footer-sidebar">
+            <h2 class="title_sidebar">
+                Rodar
+            </h2>
+            <div class="button-sidebar">
+                <a data-mylink="8" class="bnt_permission disabled_permission {{ count_disponibilidade_turmas }}  {% if 'rodar-modelo' in request.path %}ativo{% endif %}" href="{% url 'rodar_modelo' id_configuracao=id_conf %}"><span><i></i> Modelo</span></a>
+                <a data-mylink="9" class="bnt_permission disabled_permission {% if rm < 1 %} disable__link {% endif %}  {% if 'relatorios' in request.path %}ativo{% endif %}" href="{% url 'relatorios' id_configuracao=id_conf %}"><span><i></i> Relatórios</span></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+{% if admin_status == 0 %}
+    $('.bnt_permission').removeClass('disabled_permission');
+{% else %}
+    {% for numbers in lista_permissoes %}
+        $('.bnt_permission[data-mylink="{{ numbers.Cod_Tela}}"]').removeClass('disabled_permission');
+    {% endfor %}
+{% endif %}
+</script>

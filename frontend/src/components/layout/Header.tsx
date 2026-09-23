@@ -17,23 +17,23 @@ export function Header({ title, actions }: HeaderProps) {
   }
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-6">
+    <header className="flex h-16 items-center justify-between border-b border-brand-divider bg-white px-6">
       <div>
         {title ? (
-          <h1 className="text-lg font-semibold text-slate-900">{title}</h1>
+          <h1 className="font-display text-lg font-semibold text-brand-ink">{title}</h1>
         ) : (
-          <span className="text-lg font-semibold text-slate-900">Scale Engine</span>
+          <span className="font-display text-lg font-semibold text-brand-ink">Orotchimo</span>
         )}
       </div>
       <div className="flex items-center gap-4">
         {actions}
         {user && (
           <div className="flex items-center gap-3">
-            <span className="text-sm text-slate-600">{user.name}</span>
+            <span className="text-sm text-brand-ink-soft">{user.name}</span>
             <button
               type="button"
               onClick={handleLogout}
-              className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50"
+              className="rounded-full border border-brand-border px-3 py-1.5 text-sm text-brand-ink-soft hover:bg-brand-muted"
             >
               Sair
             </button>

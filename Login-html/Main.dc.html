@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Orotchimo · Login</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&amp;family=Figtree:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:'Figtree',sans-serif;background:#E0EAF8;color:#16215B}
+a{color:#1F299C}a:hover{color:#0373FF}
+.o-input{outline:none;transition:border-color .15s,box-shadow .15s,background .15s}
+.o-input::placeholder{color:#6E73A3}
+.o-input:hover{border-color:#A3A9F5!important}
+.o-input:focus{border-color:#1F299C!important;background:#FFFFFF!important;box-shadow:0 0 0 4px rgba(31,41,156,.14)}
+.o-cta{transition:background .15s}
+.o-cta:hover{background:#16215B!important;color:#FFFFFF!important}
+.o-eye:hover{background:#E0EAF8!important}
+</style>
+</helmet>
+<div style="width:1440px;height:900px;box-sizing:border-box;padding:20px;display:flex;gap:20px;background:#E0EAF8;font-family:'Figtree',sans-serif;">
+
+  <!-- Painel de marca -->
+  <section style="width:780px;flex-shrink:0;box-sizing:border-box;padding:44px;border-radius:32px;background:#16215B;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <svg width="34" height="34" viewBox="0 0 32 32" aria-hidden="true"><circle cx="15" cy="17" r="11" fill="none" stroke="#FFFFFF" stroke-width="5.5"></circle><circle cx="25" cy="7" r="4.5" fill="#F25929"></circle></svg>
+        <span style="font-family:'Unbounded',sans-serif;font-weight:700;font-size:24px;letter-spacing:-0.02em;color:#FFFFFF;">Orotchimo</span>
+      </div>
+      <span style="padding:9px 16px;border-radius:999px;border:1px solid rgba(224,234,248,.28);font-size:13px;font-weight:500;color:#E0EAF8;">Motor de otimização de escalas</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:20px;max-width:640px;">
+      <h1 style="margin:0;font-family:'Unbounded',sans-serif;font-weight:600;font-size:50px;line-height:1.08;letter-spacing:-0.03em;color:#FFFFFF;">Uma escala não é só preencher horários.</h1>
+      <p style="margin:0;max-width:520px;font-size:17px;line-height:1.55;color:#C5CBF2;">É explorar o espaço de soluções, comparar alternativas e entender por que cada escolha foi feita.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,124px);gap:8px;">
+      <div style="grid-row:span 2;border-radius:14px;background:#1F299C;padding:18px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;">
+        <span style="font-family:'Unbounded',sans-serif;font-weight:600;font-size:13px;color:#FFFFFF;">01</span>
+        <span style="font-size:15px;font-weight:600;line-height:1.3;color:#FFFFFF;">Múltiplas soluções comparáveis</span>
+      </div>
+      <div style="grid-column:span 2;border-radius:14px;background:#F25929;padding:18px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;">
+        <span style="font-family:'Unbounded',sans-serif;font-weight:600;font-size:13px;color:#16215B;">02</span>
+        <span style="font-size:15px;font-weight:700;line-height:1.3;color:#16215B;">Regras obrigatórias e preferências</span>
+      </div>
+      <div style="border-radius:14px;background:#787CA9;"></div>
+      <div style="border-radius:14px;background:#0373FF;"></div>
+      <div style="border-radius:14px;background:#30D1FF;padding:18px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;">
+        <span style="font-family:'Unbounded',sans-serif;font-weight:600;font-size:13px;color:#16215B;">03</span>
+        <span style="font-size:15px;font-weight:700;line-height:1.3;color:#16215B;">Explicabilidade</span>
+      </div>
+      <div style="border-radius:14px;background:#A3A9F5;"></div>
+    </div>
+  </section>
+
+  <!-- Formulário -->
+  <main style="flex:1;box-sizing:border-box;padding:44px;border-radius:32px;background:#FFFFFF;display:flex;flex-direction:column;justify-content:space-between;">
+    <div style="display:flex;justify-content:flex-end;font-size:14px;color:#5A5F8F;">
+      <span>Sem acesso?&nbsp;<a href="#" style="font-weight:600;text-decoration:none;">Fale com o administrador</a></span>
+    </div>
+
+    <div style="width:100%;max-width:420px;align-self:center;display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="width:8px;height:8px;border-radius:50%;background:#F25929;display:inline-block;"></span>
+        <span style="font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#5A5F8F;">Acesso</span>
+      </div>
+      <h2 style="margin:14px 0 0;font-family:'Unbounded',sans-serif;font-weight:600;font-size:34px;line-height:1.12;letter-spacing:-0.02em;color:#16215B;">Bem-vindo de volta</h2>
+      <p style="margin:10px 0 0;font-size:16px;color:#5A5F8F;">Entre para acessar seus sistemas.</p>
+
+      <form style="margin-top:36px;display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <label for="email" style="font-size:14px;font-weight:600;color:#16215B;">E-mail</label>
+          <input id="email" class="o-input" type="email" autocomplete="email" placeholder="voce@escola.com.br" style="height:54px;box-sizing:border-box;padding:0 18px;border-radius:16px;border:1px solid #D3DCEE;background:#F6F8FD;font-family:'Figtree',sans-serif;font-size:15px;font-weight:500;color:#16215B;">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <label for="senha" style="font-size:14px;font-weight:600;color:#16215B;">Senha</label>
+          <div style="position:relative;">
+            <input id="senha" class="o-input" type="password" autocomplete="current-password" placeholder="Sua senha" style="width:100%;height:54px;box-sizing:border-box;padding:0 56px 0 18px;border-radius:16px;border:1px solid #D3DCEE;background:#F6F8FD;font-family:'Figtree',sans-serif;font-size:15px;font-weight:500;color:#16215B;">
+            <button type="button" class="o-eye" aria-label="Mostrar senha" style="position:absolute;right:5px;top:5px;width:44px;height:44px;border:none;border-radius:12px;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#5A5F8F;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <label style="display:flex;align-items:center;gap:10px;font-size:14px;color:#16215B;cursor:pointer;">
+            <input type="checkbox" checked="" style="width:18px;height:18px;margin:0;accent-color:#1F299C;">
+            Manter conectado
+          </label>
+          <a href="#" style="font-size:14px;font-weight:600;text-decoration:none;">Esqueceu a senha?</a>
+        </div>
+
+        <a href="Sistemas.dc.html" class="o-cta" style="margin-top:8px;height:58px;box-sizing:border-box;padding:0 8px 0 24px;border-radius:999px;background:#1F299C;color:#FFFFFF;text-decoration:none;display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:16px;">
+          Entrar
+          <span style="width:44px;height:44px;border-radius:50%;background:#F25929;display:flex;align-items:center;justify-content:center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16215B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+          </span>
+        </a>
+      </form>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;font-size:13px;color:#5A5F8F;">
+      <span>© 2026 Orotchimo</span>
+      <span>Privacidade · Termos</span>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

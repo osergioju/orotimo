@@ -1,0 +1,224 @@
+{% extends 'base/base.html' %}
+{% load poll_extras %}
+{% load static %}
+
+{% block title %}
+    Rodar Modelo
+{% endblock %}
+
+{% block content %}
+
+    <!-- Sidebar -->
+    <div class="flexo-dashboar">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-4 col-xl-3">
+                    {% include 'base/sidebar.html' %}
+                </div>
+                <div class="col-12 col-lg-8 col-xl-9">
+
+                    <div class="body-content-dashboard">
+                        {% if 8 in lista_permissoes_cod_tela %}
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="dash1-tab" data-bs-toggle="tab" data-bs-target="#dash1" type="button" role="tab" aria-controls="dash1" aria-selected="true"><i></i> Rodar modelo</button>
+                            </li>
+                            <li class="nav-item text-sm" role="presentation">
+                                <button class="disabled nav-link" id="dash2-tab" data-bs-toggle="tab" data-bs-target="#dash2" type="button" role="tab" aria-controls="dash2" aria-selected="false"><i></i> Vídeo explicativo <small class="rounded-3xl ml-2 bg-[#fe932a] text-xs font-bold inline-block px-2">em breve</small></button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="fakeloader">
+                                <div class="centralloader">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" style="shape-rendering: auto; display: block;" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <g>
+                                            <circle cx="50" cy="50" r="32" stroke-width="8" stroke="#000000" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                                                <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                                            </circle>
+                                            <g></g>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade show active" id="dash1" role="tabpanel" aria-labelledby="dash1-tab">
+
+                                {% if rotateModel == False %}
+                                    <div class="geral-dashboard">
+                                    </div>
+                                    <div class="main-title px-6 pt-6">
+                                        <h1 class="text-2xl font-bold text-[#1a1f37]">Gerar relatório</h1>
+                                        <div class="main-content">
+                                            <div class="attention">
+                                                <span class="inline-block text-xs text-[#222222] font-bold">Suas etapas</span><Br>
+                                                <p class="inline-block text-sm mb-4 text-[#222222]">
+                                                    Páginas marcadas como <b>não preenchidas</b> podem estar em branco ou foram impactadas por mudanças em outras páginas. <Br>
+                                                    Clique em "ver página" para corrigir o problema e gerar o seu relatório. 
+                                                </p>
+                                                <div class="w-full flex mb-2">
+                                                    <div class="mr-4 items-center text-xs font-bold flex">
+                                                        <div class="mr-2 rounded-full w-3 h-3 bg-[#00FF00]"></div>
+                                                        Completas
+                                                    </div>
+                                                    <div class="mr-2 items-center text-xs font-bold flex">
+                                                        <div class="mr-2 rounded-full w-3 h-3 bg-[#FF0000]"></div>
+                                                        Pendentes
+                                                    </div>
+                                                </div>
+                                                <div class="flex justify-between gap-2">
+                                                    <div class="relative text-center w-full border border-[#222222] flex flex-col items-center justify-center px-1 py-1 rounded-2xl">
+                                                        <div class="{% if total_counts.Turmas_Count < 1 %} bg-[#FF0000] {% else %} bg-[#00FF00] {% endif %} w-4 h-4 rounded-full absolute left-2 top-2"></div>
+                                                        <img src="{% static 'svg/navbar2/1.svg' %}" class="w-6 h-6 mb-2 opacity-50 brightness-0">
+                                                        <span class="text-xs text-[#333333]">Turmas</span>
+                                                        <a class="text-xs font-bold inline-block px-1 underline"  href="{% url 'turmas' id_configuracao=id_conf %}">ver página</a>
+                                                    </div>
+
+                                                    <div class="relative text-center w-full border border-[#222222] flex flex-col items-center justify-center px-1 py-1 rounded-2xl">
+                                                        <div class="{% if total_counts.Momentos_Count < 1 %} bg-[#FF0000] {% else %} bg-[#00FF00] {% endif %} w-4 h-4 rounded-full absolute left-2 top-2"></div>
+                                                        <img src="{% static 'svg/navbar2/2.svg' %}" class="w-6 h-6 mb-2 opacity-50 brightness-0">
+                                                        <span class="text-xs text-[#333333]">Momentos</span>
+                                                        <a class="text-xs font-bold inline-block px-1 underline"  href="{% url 'momentos' id_configuracao=id_conf %}">ver página</a>
+                                                    </div>
+
+                                                    <div class="relative text-center w-full border border-[#222222] flex flex-col items-center justify-center px-1 py-1 rounded-2xl">
+                                                        <div class="{% if total_counts.Dias_Count < 1 %} bg-[#FF0000] {% else %} bg-[#00FF00] {% endif %} w-4 h-4 rounded-full absolute left-2 top-2"></div>
+                                                        <img src="{% static 'svg/navbar2/3.svg' %}" class="w-6 h-6 mb-2 opacity-50 brightness-0">
+                                                        <span class="text-xs text-[#333333]">Dias</span>
+                                                        <a class="text-xs font-bold inline-block px-1 underline"  href="{% url 'dias' id_configuracao=id_conf %}">ver página</a>
+                                                    </div>
+
+                                                    <div class="relative text-center w-full border border-[#222222] flex flex-col items-center justify-center px-1 py-1 rounded-2xl">
+                                                        <div class="{% if total_counts.Restricoes_Materias_Count < 1 %} bg-[#FF0000] {% else %} bg-[#00FF00] {% endif %} bg-[#00FF00] w-4 h-4 rounded-full absolute left-2 top-2"></div>
+                                                        <img src="{% static 'svg/navbar2/4.svg' %}" class="w-6 h-6 mb-2 opacity-50 brightness-0">
+                                                        <span class="text-xs text-[#333333]">Matérias</span>
+                                                        <a class="text-xs font-bold inline-block px-1 underline"  href="{% url 'materias' id_configuracao=id_conf %}">ver página</a>
+                                                    </div>
+
+                                                    <div class="relative text-center w-full border border-[#222222] flex flex-col items-center justify-center px-1 py-1 rounded-2xl">
+                                                        <div class="{% if total_counts.Professores_Count < 1 or total_counts.Atribuicao_Count < 1 or total_counts.Atrb_Profe < 1 %} bg-[#FF0000] {% else %} bg-[#00FF00] {% endif %} w-4 h-4 rounded-full absolute left-2 top-2"></div>
+                                                        <img src="{% static 'svg/navbar2/5.svg' %}" class="w-6 h-6 mb-2 opacity-50 brightness-0">
+                                                        <span class="text-xs text-[#333333]">Professores</span>
+                                                        <a class="text-xs font-bold inline-block px-1 underline"  href="{% url 'professores' id_configuracao=id_conf %}">ver página</a>
+                                                    </div>
+
+                                                    <div class="relative text-center w-full border border-[#222222] flex flex-col items-center justify-center px-1 py-1 rounded-2xl">
+                                                        <div class="{% if total_counts.Disponibilidade_Turmas_Count < 1 or total_counts.Dias_Count < 1 or total_counts.Momentos_Count < 1 or total_counts.Turmas_Count < 1 %} bg-[#FF0000] {% else %} bg-[#00FF00] {% endif %} w-4 h-4 rounded-full absolute left-2 top-2"></div>
+                                                        <img src="{% static 'svg/navbar2/6.svg' %}" class="w-6 h-6 mb-2 opacity-50 brightness-0">
+                                                        <span class="text-xs text-[#333333]">Disp. turmas</span>
+                                                        <a class="text-xs font-bold inline-block px-1 underline"  href="{% url 'disponbilidade_td' id_configuracao=id_conf %}">ver página</a>
+                                                    </div>
+
+                                                    <div class="text-center w-full border border-[#222222] flex flex-col items-center justify-center px-1 py-1 rounded-2xl relative">
+                                                        <div class="{% if total_counts.Disponibilidade_Count < 1 or total_counts.Dias_Count < 1 or total_counts.Professores_Count < 1 or total_counts.Momentos_Count < 1%} bg-[#FF0000] {% else %} bg-[#00FF00] {% endif %} w-4 h-4 rounded-full absolute left-2 top-2"></div>
+                                                        <img src="{% static 'svg/navbar2/6.svg' %}" class="w-6 h-6 mb-2 opacity-50 brightness-0">
+                                                        <span class="text-xs text-[#333333]">Disp. professores</span>
+                                                        <a class="text-xs font-bold inline-block px-1 underline"  href="{% url 'disponibilidade' id_configuracao=id_conf %}">ver página</a>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="modelos_rodar">
+                                        <div class="bubblerodar">
+                                            
+                                            <div class="header-rodar-modelo">
+                                                <h2>Gerar novo relatório <Br></h2>
+                                            </div>
+
+
+                                            <form id="fm" method="post" action="{% url 'rodar_modelo' id_configuracao=id_conf %}">
+                                                {% csrf_token %}
+                                                
+
+                                                {% if N_Rodadas_Utilizadas == N_Rodadas_Contratadas_total %}
+                                                    <span class="atenttion_rodaddas"><b>Atenção:</b> Você já utilizou <b>{{ N_Rodadas_Utilizadas }}</b> rodadas de <b>{{ N_Rodadas_Contratadas_total}}</b>. <a href="#">Entre em contato</a> para obter mais.</span>
+                                                {% else %}
+                                                
+                                                    <input type="submit" {% if has_zero %} disabled {% endif %} class="{% if has_zero %}opacity-50 cursor-not-allowed {% endif %}" value="Gerar relatório">
+                                                {% endif %}
+
+                                                {% if has_zero %}
+                                                    <br>
+                                                    <span class="inline py-4 font-bold text-sm">Para gerar o relatório, verifique se todas as abas foram preenchidas.</span>
+                                                {% endif %}
+
+                                                {% if N_Rodadas_Utilizadas >= N_Rodadas_Contratadas_proximidade and N_Rodadas_Utilizadas <  N_Rodadas_Contratadas_total%}
+                                                    <br><span class="atenttion_rodaddas"><b>Atenção:</b> Você já utilizou <b>{{ N_Rodadas_Utilizadas }}</b> rodadas, seu limite é <b>{{ N_Rodadas_Contratadas_total }}</b>.</span><br>
+                                                {% endif %}
+
+                                                <input type="hidden" name="id_config" value="{{ id_conf }}">
+                                            </form>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    {% if msg_sucesso %}
+                                        <div class="sucesso_modelo">
+                                            <div class="pill_sucesso_modelo">
+                                                <i></i>
+                                                <h2>Concluído</h2>
+                                                <a href="{% url 'relatorios' id_configuracao=id_conf %}">Clique aqui para conferir seu relatório.</a>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    
+                                    {% if msg_erro %}
+                                        <div class="super_erros-guide">
+                                            {% for item in msg_erro %}
+                                                <div class="unicaitem-error">
+                                                    <h3>{{ item.1 }}</h3>
+                                                    <ul>
+                                                        {% for mensagem in item.0 %}
+                                                            <li>{{ mensagem }}</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                                
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+
+                                    {% if msg_erro_2 %}
+                                        <div class="super_erros-guide">
+                                            <div class="unicaitem-error">
+                                                <h3>{{ msg_erro_2 }}</h3>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    
+
+                                {% endif %}
+
+
+                                {% if modelos_disponiveis %}
+                                    <div class="modelos_disponiveis">
+                                        <div class="bubblemodelos-disponveis">
+                                            <h3>Você tem relatórios disponíveis</h3>
+                                            <p>Clique no link abaixo para visualizar o relatório.</p>
+                                            <ul>
+                                                {% for modelo in modelos_disponiveis %}
+                                                    <li><a href="{% url 'ver_relatorio' id_configuracao=id_conf id_rodada=modelo.Id_Rodada %}">Gerado em {{ modelo.data_registro|date:"d/m/Y H:i:s" }} </a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                        {% else %}
+                            <div class="nopermission_page">
+                                <i></i>
+                                <h2>Você não tem permissão<Br>para acessar essa página</h2>
+                                <a href="{% url 'administrativo' %}">Voltar a pagina inicial</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %} 

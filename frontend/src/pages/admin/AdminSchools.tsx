@@ -18,7 +18,7 @@ export function AdminSchools() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-semibold text-slate-900">Escolas</h1>
+      <h1 className="text-2xl font-semibold text-brand-ink">Escolas</h1>
       <Table columns={columns} data={schools} rowKey={(row) => row.id} />
     </div>
   )

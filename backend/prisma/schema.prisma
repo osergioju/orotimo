@@ -1,0 +1,291 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SystemStatus {
+  active
+  coming_soon
+}
+
+enum ScheduleStatus {
+  draft
+  generating
+  generated
+  failed
+}
+
+enum SolutionStatus {
+  success
+  infeasible
+  error
+}
+
+enum RuleType {
+  hard
+  soft
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  schools     School[]
+  userSystems UserSystem[]
+
+  @@map("users")
+}
+
+model System {
+  id          String       @id @default(cuid())
+  key         String       @unique
+  name        String
+  description String
+  status      SystemStatus
+
+  userSystems UserSystem[]
+
+  @@map("systems")
+}
+
+model UserSystem {
+  userId   String
+  systemId String
+  enabled  Boolean @default(false)
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  system System @relation(fields: [systemId], references: [id], onDelete: Cascade)
+
+  @@id([userId, systemId])
+  @@index([systemId])
+  @@map("user_systems")
+}
+
+model School {
+  id          String   @id @default(cuid())
+  ownerId     String
+  name        String
+  cnpj        String
+  description String
+  logoUrl     String?
+  unitsCount  Int      @default(1)
+  createdAt   DateTime @default(now())
+
+  owner       User         @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  schedules   Schedule[]
+  teachers    Teacher[]
+  classes     Class[]
+  subjects    Subject[]
+  rooms       Room[]
+  timeSlots   TimeSlot[]
+  rules       Rule[]
+  assignments Assignment[]
+
+  @@index([ownerId])
+  @@map("schools")
+}
+
+model Schedule {
+  id           String         @id @default(cuid())
+  schoolId     String
+  name         String
+  period       String?
+  academicYear String?
+  status       ScheduleStatus @default(draft)
+  createdAt    DateTime       @default(now())
+
+  school    School             @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  solutions ScheduleSolution[]
+
+  @@index([schoolId])
+  @@map("schedules")
+}
+
+/// Resultado de uma execução do solver para uma escala. Cada linha é uma
+/// combinação (variante de coeficientes) encontrada; guardamos o payload
+/// bruto retornado pelo modelo Python em colunas JSON.
+model ScheduleSolution {
+  id                      String         @id @default(cuid())
+  scheduleId              String
+  status                  SolutionStatus
+  messages                Json?
+  visualizacaoEscola      Json?
+  visualizacaoProfessores Json?
+  visualizacaoJanelas     Json?
+  resumoJanelas           Json?
+  createdAt               DateTime       @default(now())
+
+  schedule Schedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+
+  @@index([scheduleId])
+  @@map("schedule_solutions")
+}
+
+model Teacher {
+  id                 String    @id @default(cuid())
+  schoolId           String
+  name               String
+  email              String
+  phone              String?
+  cpf                String?
+  birthDate          DateTime?
+  unit               String
+  subjects           String[]
+  contractType       String?
+  maxWeeklyClasses   Int       @default(20)
+  preferredShift     String    @default("Manhã")
+  twinClasses        Boolean   @default(false)
+  avoidGaps          Boolean   @default(false)
+  emailNotifications Boolean   @default(false)
+  notes              String?
+  /// Peso de preferência (1-10) usado pelo solver para priorizar aulas
+  /// geminadas deste professor na função objetivo.
+  preference         Int       @default(5)
+  createdAt          DateTime  @default(now())
+
+  school       School                    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  availability TeacherAvailabilitySlot[]
+  assignments  Assignment[]
+
+  @@index([schoolId])
+  @@map("teachers")
+}
+
+model Class {
+  id            String   @id @default(cuid())
+  schoolId      String
+  name          String
+  shift         String   @default("Manhã")
+  studentsCount Int?
+  createdAt     DateTime @default(now())
+
+  school       School                  @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  availability ClassAvailabilitySlot[]
+  assignments  Assignment[]
+
+  @@index([schoolId])
+  @@map("classes")
+}
+
+model Subject {
+  id          String   @id @default(cuid())
+  schoolId    String
+  name        String
+  weeklyHours Int      @default(2)
+  /// Peso de preferência (1-10) usado pelo solver para priorizar aulas
+  /// geminadas desta disciplina na função objetivo.
+  preference  Int      @default(5)
+  createdAt   DateTime @default(now())
+
+  school      School       @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  assignments Assignment[]
+
+  @@index([schoolId])
+  @@map("subjects")
+}
+
+/// Atribuição de um professor a uma disciplina dentro de uma turma —
+/// equivalente a Atribuicoes_Professores + Restricoes_Materias do sistema
+/// legado, simplificado assumindo um único professor por (turma, disciplina).
+model Assignment {
+  id               String   @id @default(cuid())
+  schoolId         String
+  classId          String
+  subjectId        String
+  teacherId        String
+  weeklyMinClasses Int      @default(2)
+  dailyMaxClasses  Int      @default(2)
+  createdAt        DateTime @default(now())
+
+  school  School  @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  class   Class   @relation(fields: [classId], references: [id], onDelete: Cascade)
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  teacher Teacher @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+
+  @@unique([classId, subjectId])
+  @@index([schoolId])
+  @@index([teacherId])
+  @@map("assignments")
+}
+
+model Room {
+  id        String   @id @default(cuid())
+  schoolId  String
+  name      String
+  capacity  Int?
+  createdAt DateTime @default(now())
+
+  school School @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+
+  @@index([schoolId])
+  @@map("rooms")
+}
+
+/// Um "momento" (período de aula) da grade horária da escola — ex.: "Aula 1, 07:00–07:50".
+/// Os dias da semana continuam fixos (Segunda–Sexta) no código; o que a escola
+/// realmente configura em "Horários" são esses momentos.
+model TimeSlot {
+  id        String   @id @default(cuid())
+  schoolId  String
+  label     String
+  startTime String
+  endTime   String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  school              School                    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  teacherAvailability TeacherAvailabilitySlot[]
+  classAvailability   ClassAvailabilitySlot[]
+
+  @@index([schoolId])
+  @@map("time_slots")
+}
+
+model Rule {
+  id          String   @id @default(cuid())
+  schoolId    String
+  description String
+  type        RuleType @default(soft)
+  weight      Int      @default(5)
+  createdAt   DateTime @default(now())
+
+  school School @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+
+  @@index([schoolId])
+  @@map("rules")
+}
+
+model TeacherAvailabilitySlot {
+  teacherId  String
+  timeSlotId String
+  day        String
+  available  Boolean @default(false)
+
+  teacher  Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  timeSlot TimeSlot @relation(fields: [timeSlotId], references: [id], onDelete: Cascade)
+
+  @@id([teacherId, timeSlotId, day])
+  @@index([timeSlotId])
+  @@map("teacher_availability_slots")
+}
+
+model ClassAvailabilitySlot {
+  classId    String
+  timeSlotId String
+  day        String
+  available  Boolean @default(false)
+
+  class    Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  timeSlot TimeSlot @relation(fields: [timeSlotId], references: [id], onDelete: Cascade)
+
+  @@id([classId, timeSlotId, day])
+  @@index([timeSlotId])
+  @@map("class_availability_slots")
+}

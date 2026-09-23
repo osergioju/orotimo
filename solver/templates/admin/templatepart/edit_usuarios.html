@@ -1,0 +1,50 @@
+<div class="minimodal">
+    <form action="#">
+        <input type="hidden" name="Id_Usuario">
+        <div class="formg_math">
+            <label for="1">
+                Nome
+                <input type="text" name="Nome_Usuario" required>
+            </label>
+        </div>
+
+        <div class="formg_math">
+            <label for="1">
+                E-mail
+                <input type="text" name="Email" required>
+            </label>
+        </div>
+
+        <div class="formg_math">
+            <label for="1">
+                Escola
+                <input type="text" name="Id_Escola__Nome_Escola" disabled>
+            </label>
+        </div>
+
+        <div class="formg_math">
+            <label for="1">
+                Unidade
+                <input type="text" name="Id_Unidade__Nome_Unidade" id="" disabled>
+            </label>
+        </div>
+
+        <div class="formg_math">
+            <label for="3">
+                Status
+                <label for="3_a">
+                    <input type="radio" name="Is_Ativo" value="1">
+                    Ativo
+                </label>
+                <label for="3_a">
+                    <input type="radio" name="Is_Ativo" value="0">
+                    Inativo
+                </label>
+            </label>
+        </div>
+
+        <div class="formg_math">
+            <button onclick="actionAtualiza(3)" type="button">Atualizar</button>
+        </div>
+    </form>
+</div>

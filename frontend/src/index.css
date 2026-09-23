@@ -1,7 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 
 @theme {
-  --font-sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Figtree', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Unbounded', system-ui, 'Segoe UI', Roboto, sans-serif;
+
+  --color-brand-canvas: #e0eaf8;
+  --color-brand-ink: #16215b;
+  --color-brand-primary: #1f299c;
+  --color-brand-link: #0373ff;
+  --color-brand-orange: #f25929;
+  --color-brand-cyan: #30d1ff;
+  --color-brand-lilac: #a3a9f5;
+  --color-brand-slate: #787ca9;
+  --color-brand-ink-soft: #5a5f8f;
+  --color-brand-placeholder: #6e73a3;
+  --color-brand-lavender: #c5cbf2;
+  --color-brand-input: #f6f8fd;
+  --color-brand-muted: #f2f5fc;
+  --color-brand-border: #d3dcee;
+  --color-brand-divider: #e6ebf6;
+  --color-brand-dashed: #bfc8e4;
+  --color-brand-error: #d8431a;
+  --color-brand-error-ink: #c23a10;
 }
 
 html,
@@ -11,5 +32,22 @@ body,
 }
 
 body {
-  @apply bg-slate-50 text-slate-900 antialiased;
+  margin: 0;
+  background: var(--color-brand-canvas);
+  color: var(--color-brand-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--color-brand-primary);
+}
+a:hover {
+  color: var(--color-brand-link);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
 }

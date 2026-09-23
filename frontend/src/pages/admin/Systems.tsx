@@ -26,7 +26,7 @@ export function Systems() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-semibold text-slate-900">Sistemas</h1>
+      <h1 className="text-2xl font-semibold text-brand-ink">Sistemas</h1>
       <Table columns={columns} data={systems} rowKey={(row) => row.id} />
     </div>
   )

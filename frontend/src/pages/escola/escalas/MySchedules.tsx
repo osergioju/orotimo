@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Badge, Button, EmptyState, Table, type TableColumn } from '../../../components/ui'
+import { Badge, Table, type TableColumn } from '../../../components/ui'
 import { useSchool } from '../../../contexts/SchoolContext'
 import { api } from '../../../lib/api'
 import type { Schedule } from '../../../types'
@@ -38,21 +38,41 @@ export function MySchedules() {
   ]
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-slate-900">Escalas</h1>
-        <Button onClick={() => navigate(`${base}/escalas/nova`)}>+ Criar nova escala</Button>
+    <div className="flex flex-1 flex-col gap-5">
+      <div className="flex items-end justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-2 w-2 rounded-full bg-brand-orange" />
+            <span className="text-[13px] font-semibold uppercase tracking-[0.08em] text-brand-ink-soft">Escalas</span>
+          </div>
+          <h1 className="mt-3.5 font-display text-[32px] font-semibold tracking-tight text-brand-ink">Minhas escalas</h1>
+        </div>
+        <button
+          type="button"
+          onClick={() => navigate(`${base}/escalas/nova`)}
+          className="h-11 shrink-0 rounded-full bg-brand-primary px-5 text-sm font-semibold text-white hover:bg-brand-ink"
+        >
+          + Criar nova escala
+        </button>
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-slate-400">Carregando escalas...</p>
+        <p className="text-sm text-brand-ink-soft">Carregando escalas...</p>
       ) : schedules.length === 0 ? (
-        <EmptyState
-          icon="🗂️"
-          title="Nenhuma escala criada"
-          description="Crie sua primeira escala para começar a organizar os horários."
-          action={<Button onClick={() => navigate(`${base}/escalas/nova`)}>+ Criar nova escala</Button>}
-        />
+        <div className="flex flex-1 items-center justify-center rounded-[28px] border-[1.5px] border-dashed border-brand-dashed bg-white p-10 text-center">
+          <div className="flex flex-col items-center gap-3">
+            <span className="text-3xl">🗂️</span>
+            <p className="text-sm font-semibold text-brand-ink">Nenhuma escala criada</p>
+            <p className="max-w-xs text-sm text-brand-ink-soft">Crie sua primeira escala para começar a organizar os horários.</p>
+            <button
+              type="button"
+              onClick={() => navigate(`${base}/escalas/nova`)}
+              className="mt-1 h-11 rounded-full bg-brand-primary px-5 text-sm font-semibold text-white hover:bg-brand-ink"
+            >
+              + Criar nova escala
+            </button>
+          </div>
+        </div>
       ) : (
         <Table
           columns={columns}

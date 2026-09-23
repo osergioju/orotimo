@@ -1,8 +1,12 @@
 import type { NextFunction, Request, Response } from 'express'
+import { AppError } from '../lib/errors'
 
 export function errorMiddleware(err: unknown, _req: Request, res: Response, _next: NextFunction) {
-  const message = err instanceof Error ? err.message : 'Erro interno inesperado'
-  const status = err instanceof Error && err.name === 'InvalidCredentialsError' ? 401 : 500
+  if (err instanceof AppError) {
+    res.status(err.status).json({ error: err.message })
+    return
+  }
 
-  res.status(status).json({ error: message })
+  console.error(err)
+  res.status(500).json({ error: 'Erro interno inesperado' })
 }

@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express'
 import { usersRepository } from '../repositories/users.repository'
-import { mockSchools, mockSystems, mockUserSystems } from '../mocks/data'
+import { prisma } from '../lib/prisma'
 
 export const adminController = {
   async listUsers(_req: Request, res: Response, next: NextFunction) {
@@ -14,7 +14,8 @@ export const adminController = {
 
   async listSchools(_req: Request, res: Response, next: NextFunction) {
     try {
-      res.json({ schools: mockSchools })
+      const schools = await prisma.school.findMany({ orderBy: { createdAt: 'asc' } })
+      res.json({ schools })
     } catch (error) {
       next(error)
     }
@@ -22,7 +23,8 @@ export const adminController = {
 
   async listSystems(_req: Request, res: Response, next: NextFunction) {
     try {
-      res.json({ systems: mockSystems })
+      const systems = await prisma.system.findMany({ orderBy: { name: 'asc' } })
+      res.json({ systems })
     } catch (error) {
       next(error)
     }
@@ -31,12 +33,15 @@ export const adminController = {
   async getUserPermissions(req: Request, res: Response, next: NextFunction) {
     try {
       const { userId } = req.params
-      const permissions = mockSystems.map((system) => ({
+      const systems = await prisma.system.findMany({
+        orderBy: { name: 'asc' },
+        include: { userSystems: { where: { userId } } },
+      })
+
+      const permissions = systems.map((system) => ({
         systemId: system.id,
         systemName: system.name,
-        enabled: mockUserSystems.some(
-          (userSystem) => userSystem.userId === userId && userSystem.systemId === system.id && userSystem.enabled,
-        ),
+        enabled: system.userSystems.some((userSystem) => userSystem.enabled),
       }))
 
       res.json({ userId, permissions })
@@ -50,15 +55,16 @@ export const adminController = {
       const { userId } = req.params
       const { systemId, enabled } = req.body ?? {}
 
-      const existing = mockUserSystems.find(
-        (userSystem) => userSystem.userId === userId && userSystem.systemId === systemId,
-      )
-
-      if (existing) {
-        existing.enabled = Boolean(enabled)
-      } else {
-        mockUserSystems.push({ userId, systemId, enabled: Boolean(enabled) })
+      if (!systemId) {
+        res.status(400).json({ error: 'systemId é obrigatório' })
+        return
       }
+
+      await prisma.userSystem.upsert({
+        where: { userId_systemId: { userId, systemId } },
+        create: { userId, systemId, enabled: Boolean(enabled) },
+        update: { enabled: Boolean(enabled) },
+      })
 
       res.json({ userId, systemId, enabled: Boolean(enabled) })
     } catch (error) {

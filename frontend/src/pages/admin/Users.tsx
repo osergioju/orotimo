@@ -19,7 +19,7 @@ export function Users() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-semibold text-slate-900">Usuários</h1>
+      <h1 className="text-2xl font-semibold text-brand-ink">Usuários</h1>
       <Table columns={columns} data={users} rowKey={(row) => row.id} onRowClick={(row) => navigate(`/admin/permissoes/${row.id}`)} />
     </div>
   )

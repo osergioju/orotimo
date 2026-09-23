@@ -1,0 +1,63 @@
+{% extends 'base/baselogin.html' %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+        
+    <div class="superguide_login_firstaccess">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="centerlogin-fristacess">
+                        <div class="bubblelogin-form">
+                            <div class="header-loggin-form">
+                                <h2>Cadastre uma nova senha</h2>
+                                <p>Como esse é seu primeiro acesso, cadastre uma nova senha pessoal para faciliar o acesso à plataforma.</p>
+                            </div>
+                            <div class="body-loggin-form">
+                                <form method="post" action="{% url 'alterar_senha' id_user=id_user %}">
+                                    {% csrf_token %}
+                                    <div class="body-loggin-form">
+                                        <div class="formg_login_first">
+                                            <label for="2">
+                                                Nova Senha
+                                                <input type="password" name="senha_nova" id="2">
+                                            </label>
+                                            <p class="disclaimer_input">
+                                                *Senha de 6 ou mais caracteres, deve conter pelo menos um número, uma letra maiúscula e um caractere especial.
+                                            </p>
+                                        </div>
+                                        <div class="formg_login_first">
+                                            <label for="3">
+                                                Confirmar nova senha
+                                                <input type="password" id="3">
+                                            </label>
+                                        </div>
+                                        <div class="formg_login_first btn_inside-form">
+                                            <button class="altPass" type="submit" disabled>Alterar senha</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottomlogin-flex row g-0">
+            <div class="col-12 col-lg-4 offset-lg-4">
+                <div class="brand-crt">
+                    <a href="#">Desenvolvido com <i></i> por CRT</a>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4">
+                <div class="brand-math-footer">
+                    <a href="#"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %} 

@@ -8,10 +8,10 @@ interface BadgeProps {
 }
 
 const toneClasses: Record<Tone, string> = {
-  neutral: 'bg-slate-100 text-slate-600',
+  neutral: 'bg-brand-muted text-brand-ink-soft',
   success: 'bg-emerald-100 text-emerald-700',
   warning: 'bg-amber-100 text-amber-700',
-  info: 'bg-indigo-100 text-indigo-700',
+  info: 'bg-brand-canvas text-brand-primary',
 }
 
 export function Badge({ tone = 'neutral', children }: BadgeProps) {

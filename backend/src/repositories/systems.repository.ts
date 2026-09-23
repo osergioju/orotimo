@@ -1,16 +1,15 @@
-import { mockSystems, mockUserSystems } from '../mocks/data'
+import { prisma } from '../lib/prisma'
 import type { SystemModule } from '../models/system.model'
 
 export const systemsRepository = {
   async list(): Promise<SystemModule[]> {
-    return mockSystems
+    return prisma.system.findMany({ orderBy: { name: 'asc' } })
   },
 
   async listEnabledForUser(userId: string): Promise<SystemModule[]> {
-    const enabledIds = mockUserSystems
-      .filter((userSystem) => userSystem.userId === userId && userSystem.enabled)
-      .map((userSystem) => userSystem.systemId)
-
-    return mockSystems.filter((system) => enabledIds.includes(system.id))
+    return prisma.system.findMany({
+      where: { userSystems: { some: { userId, enabled: true } } },
+      orderBy: { name: 'asc' },
+    })
   },
 }

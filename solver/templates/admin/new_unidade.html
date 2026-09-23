@@ -1,0 +1,70 @@
+{% extends 'admin/baseadmin.html' %}
+
+{% block title %}
+    Admin - Nova unidade
+{% endblock %}
+
+{% block content %}
+
+<div class="formerx_adm">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                
+                <div class="bubble-form">
+                    {% if list_escolas|length  == 0 %}
+                        <a href="{% url 'new_escola' %}">Nenhuma escola cadastrada, clique aqui para adicionar uma nova.</a>
+                    {% else %}
+                    <div class="header-formex">
+                        <h2>Adicionar unidade</h2>
+                    </div>
+                    <div class="body-formex">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="formg_math">
+                                <label for="1">
+                                    Nome da unidade
+                                    <input type="text" name="Nome_Unidade" required>
+                                </label>
+                            </div>
+
+                            <div class="formg_math">
+                                <label for="1">
+                                    Escola
+                                    <select name="Id_Escola" id="">
+                                        <option selected disabled>--</option>
+                                        {% for escolas in list_escolas %}
+                                            <option value="{{ escolas.Id_Escola }}">{{ escolas.Nome_Escola }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </label>
+                            </div>
+
+                            <div class="formg_math">
+                                <input type="submit" value="Cadastrar unidade">
+                            </div>
+
+                            {% if messages %}
+                                <div class="bubble_message">
+                                    {% for message in messages %}
+                                        {% if message.tags == 'error' %}
+                                            <div class="error-message">{{ message }}</div>
+                                        {% elif message.tags == 'success' %}
+                                            <div class="success-message">{{ message }}</div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %} 

@@ -1,7 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Card, CardBody, Input } from '../../components/ui'
-import { Header } from '../../components/layout/Header'
+import { Logo } from '../../components/layout/Logo'
 import { useSchool } from '../../contexts/SchoolContext'
 import { api } from '../../lib/api'
 
@@ -36,68 +35,100 @@ export function NewSchool() {
 
   if (success) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50">
-        <Card className="w-full max-w-sm text-center">
-          <CardBody>
-            <div className="text-3xl">✅</div>
-            <p className="mt-3 text-base font-semibold text-slate-900">Escola criada com sucesso</p>
-            <p className="mt-1 text-sm text-slate-500">Redirecionando para o dashboard...</p>
-          </CardBody>
-        </Card>
+      <div className="flex min-h-screen items-center justify-center bg-brand-canvas p-5">
+        <div className="w-full max-w-sm rounded-[28px] bg-white p-8 text-center">
+          <div className="text-3xl">✅</div>
+          <p className="mt-3 font-display text-base font-semibold text-brand-ink">Escola criada com sucesso</p>
+          <p className="mt-1 text-sm text-brand-ink-soft">Redirecionando para o dashboard...</p>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <Header title="Nova escola" />
-      <main className="mx-auto max-w-lg px-6 py-10">
-        <h1 className="text-2xl font-semibold text-slate-900">Nova escola</h1>
-        <p className="mt-1 text-slate-500">Preencha os dados iniciais da escola</p>
+    <div className="flex min-h-screen flex-col gap-5 bg-brand-canvas p-5">
+      <header className="flex h-[76px] shrink-0 items-center rounded-[28px] bg-white px-7">
+        <button type="button" onClick={() => navigate('/escalas/escola')} className="flex items-center">
+          <Logo size={30} />
+        </button>
+      </header>
 
-        <Card className="mt-6">
-          <CardBody>
-            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-              <Input
-                label="Nome da escola"
-                name="name"
+      <main className="flex flex-1 items-start justify-center rounded-[32px] bg-white p-6 sm:items-center sm:p-11">
+        <div className="w-full max-w-md">
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-2 w-2 rounded-full bg-brand-orange" />
+            <span className="text-[13px] font-semibold uppercase tracking-[0.08em] text-brand-ink-soft">Escola</span>
+          </div>
+          <h1 className="mt-3.5 font-display text-[28px] font-semibold tracking-tight text-brand-ink">Nova escola</h1>
+          <p className="mt-2 text-sm text-brand-ink-soft">Preencha os dados iniciais da escola.</p>
+
+          <form className="mt-7 flex flex-col gap-4" onSubmit={handleSubmit}>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="nome" className="text-sm font-semibold text-brand-ink">
+                Nome da escola
+              </label>
+              <input
+                id="nome"
+                required
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-                required
+                placeholder="Ex.: Escola ABC"
+                className="h-11 rounded-xl border border-brand-border bg-brand-input px-3.5 text-sm text-brand-ink outline-none focus:border-brand-primary focus:bg-white"
               />
-              <Input label="CNPJ" name="cnpj" value={cnpj} onChange={(event) => setCnpj(event.target.value)} />
-              <label className="flex flex-col gap-1.5">
-                <span className="text-sm font-medium text-slate-700">Descrição</span>
-                <textarea
-                  className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  rows={3}
-                  value={description}
-                  onChange={(event) => setDescription(event.target.value)}
-                />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="cnpj" className="text-sm font-semibold text-brand-ink">
+                CNPJ
               </label>
-              <Input
-                label="Quantidade de unidades"
-                name="unitsCount"
+              <input
+                id="cnpj"
+                value={cnpj}
+                onChange={(event) => setCnpj(event.target.value)}
+                placeholder="00.000.000/0000-00"
+                className="h-11 rounded-xl border border-brand-border bg-brand-input px-3.5 text-sm text-brand-ink outline-none focus:border-brand-primary focus:bg-white"
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="descricao" className="text-sm font-semibold text-brand-ink">
+                Descrição
+              </label>
+              <textarea
+                id="descricao"
+                rows={3}
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
+                placeholder="Ensino fundamental e médio, período integral..."
+                className="rounded-xl border border-brand-border bg-brand-input p-3.5 text-sm text-brand-ink outline-none focus:border-brand-primary focus:bg-white"
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="unidades" className="text-sm font-semibold text-brand-ink">
+                Quantidade de unidades
+              </label>
+              <input
+                id="unidades"
                 type="number"
                 min={1}
                 value={unitsCount}
                 onChange={(event) => setUnitsCount(event.target.value)}
+                className="h-11 rounded-xl border border-brand-border bg-brand-input px-3.5 text-sm text-brand-ink outline-none focus:border-brand-primary focus:bg-white"
               />
-              <label className="flex flex-col gap-1.5">
-                <span className="text-sm font-medium text-slate-700">Foto/logo</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="text-sm text-slate-500 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-slate-700 hover:file:bg-slate-200"
-                />
-              </label>
+            </div>
+            <label className="flex cursor-pointer flex-col items-center gap-2 rounded-2xl border-[1.5px] border-dashed border-brand-dashed bg-brand-input p-5 text-center transition-colors hover:border-brand-primary hover:bg-brand-muted">
+              <input type="file" accept="image/*" className="hidden" />
+              <span className="text-sm font-semibold text-brand-ink">Foto/logo da escola</span>
+              <span className="text-xs text-brand-ink-soft">Clique para enviar (opcional)</span>
+            </label>
 
-              <Button type="submit" disabled={isSubmitting} className="mt-2 w-full">
-                {isSubmitting ? 'Salvando...' : 'Salvar escola'}
-              </Button>
-            </form>
-          </CardBody>
-        </Card>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="mt-2 h-11 rounded-full bg-brand-primary text-sm font-semibold text-white hover:bg-brand-ink disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {isSubmitting ? 'Salvando...' : 'Salvar escola'}
+            </button>
+          </form>
+        </div>
       </main>
     </div>
   )

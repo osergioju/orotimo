@@ -1,0 +1,282 @@
+{% extends 'admin/baseadmin.html' %}
+
+{% block title %}
+    Admin - Nova unidade
+{% endblock %}
+
+{% block content %}
+
+{% csrf_token %}
+<div class="formerx_adm">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                
+                <div class="bubble-form">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Escolas</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Unidades</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Usuários</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="table_actions_adm">
+                                <div class="header-table_adm">
+                                    <h3>Escolas</h3>
+                                </div>
+                                <div class="unicatable_adm">
+                                    <table class="table" id="escolas_cad">
+                                        <thead>
+                                            <tr>
+                                                <td>Id</td>
+                                                <td>Nome</td>
+                                                <td>Rodadas contratadas</td>
+                                                <td>Rodadas utilizadas</td>
+                                                <td>Ações</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for escolas in list_escolas%}
+                                            <tr>
+                                                <td>{{ escolas.Id_Escola }}</td>
+                                                <td>{{ escolas.Nome_Escola }}</td>
+                                                <td>{{ escolas.N_Rodadas_Contratadas }}</td>
+                                                <td>{{ escolas.N_Rodadas_Utilizadas }}</td>
+                                                <td> 
+                                                    <a href="javascript:void(0)" onclick="changeList(this,1, {{ escolas.Id_Escola }})">
+                                                        Editar
+                                                        <div class="actionen_">
+                                                            <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" style="shape-rendering: auto; display: block;">
+                                                                <g>
+                                                                    <circle cx="50" cy="50" fill="none" stroke="#e15b64" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
+                                                                        <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+                                                                    </circle>
+                                                                </g>
+                                                            </svg>
+                                                        </div>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <div class="disclaimer-actionsadm">
+                                        <span><b>Atenção: </b> ao excluir uma escola, todo conteúdo relacionado também será excluído (unidades, usuários, soluções etc).</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="table_actions_adm">
+                                <div class="header-table_adm">
+                                    <h3>Unidades</h3>
+                                </div>
+                                <div class="unicatable_adm">
+                                    <table class="table" id="escolas_cad">
+                                        <thead>
+                                            <tr>
+                                                <td>Id</td>
+                                                <td>Nome</td>
+                                                <td>Escola</td>
+                                                <td>Ações</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for unidades in list_unidades %}
+                                            <tr>
+                                                <td>{{ unidades.Id_Unidade }}</td>
+                                                <td>{{ unidades.Nome_Unidade }}</td>
+                                                <td>{{ unidades.Id_Escola.Nome_Escola }}</td>
+                                                <td> 
+                                                    <a href="javascript:void(0)" onclick="changeList(this,2, {{ unidades.Id_Unidade }}, 'excluir',)">
+                                                        Editar
+                                                        <div class="actionen_">
+                                                            <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" style="shape-rendering: auto; display: block;">
+                                                                <g>
+                                                                    <circle cx="50" cy="50" fill="none" stroke="#e15b64" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
+                                                                        <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+                                                                    </circle>
+                                                                </g>
+                                                            </svg>
+                                                        </div>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                            <div class="table_actions_adm">
+                                <div class="header-table_adm">
+                                    <h3>Usuários</h3>
+                                </div>
+                                <div class="unicatable_adm">
+
+                                    <table class="table" id="escolas_cad">
+                                        <thead>
+                                            <tr>
+                                                <td>Id</td>
+                                                <td>Nome</td>
+                                                <td>E-mail</td>
+                                                <td>Escola</td>
+                                                <td>Unidade</td>
+                                                <td>Ações</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for usuarios in list_usuarios %}
+                                            <tr>
+                                                <td>{{ usuarios.Id_Usuario }}</td>
+                                                <td>{{ usuarios.Nome_Usuario }}</td>
+                                                <td>{{ usuarios.Email }}</td>
+                                                <td>{{ usuarios.Id_Escola.Nome_Escola }}</td>
+                                                <td>{{ usuarios.Id_Unidade.Nome_Unidade }}</td>
+                                                <td> 
+                                                    <a href="javascript:void(0)" onclick="changeList(this,3, {{ usuarios.Id_Usuario }}, 'alterar',)">
+                                                        Editar
+                                                        <div class="actionen_">
+                                                            <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" style="shape-rendering: auto; display: block;">
+                                                                <g>
+                                                                    <circle cx="50" cy="50" fill="none" stroke="#e15b64" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
+                                                                        <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+                                                                    </circle>
+                                                                </g>
+                                                            </svg>
+                                                        </div>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="grandex-modal">
+    <div class="centralmodal-edit">
+        <div class="blocmodal-edit">
+            <div class="loadermini-modal">
+                <div class="centerload-erminimodal">
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" style="shape-rendering: auto; display: block;">
+                        <g>
+                            <circle cx="50" cy="50" fill="none" stroke="#e15b64" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
+                                <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+                            </circle>
+                        </g>
+                    </svg>
+                    <div class="sucesso-modal">
+                        <h2>Atualizado, aguarde...</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="headermodal-edit">
+                <button onclick="closeModax();">x</button>
+            </div>
+            <div class="body-modax"></div>
+        </div>
+    </div>
+</div>
+
+<script>    
+
+    function changeList(element,x, y){
+        var csrfToken = $('input[name="csrfmiddlewaretoken"]').val(); 
+        $(element).find('.actionen_').addClass('active_action');
+        $.ajax({
+            type: 'POST',
+            url: '{% url "changelistagem" %}', 
+            data : {
+                csrfmiddlewaretoken: csrfToken, 
+                x : x,
+                y : y,
+            },
+            success: function(data) {
+                $('.actionen_').removeClass('active_action');
+                $('.body-modax').html(data.content);
+                $('.grandex-modal').fadeIn();
+                for (const [key, value] of Object.entries(data.array[0])) {
+                    const input = document.querySelector("[name='"+key+"']");
+                    if (input.type === 'radio') {
+                        const radioWithValue = document.querySelector(`[name='${key}'][value='${value}']`);
+                        if (radioWithValue) {
+                            radioWithValue.checked = true;
+                        }
+                    } else {
+                        input.value = value;
+                    }
+                }
+            },
+            error: function(xhr, status, error) {
+                // Erro
+                $('.actionen_').removeClass('active_action');
+                alert('Erro na requisição');
+                console.log('Status: ' + status);
+                console.log('Erro: ' + error);
+            }
+        });
+    }
+
+    function closeModax(){
+        $('.body-modax').html('');
+        $('.grandex-modal').fadeOut();
+    }
+
+    function closeModax(){
+        $('.grandex-modal').fadeOut();
+    }
+
+    function actionAtualiza(x){
+        $('.loadermini-modal').fadeIn();
+        var csrfToken = $('input[name="csrfmiddlewaretoken"]').val(); 
+        action = 'y';
+        x = x;
+        fullydata = $('.minimodal form').serialize();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "changelistagem" %}', 
+            data : {
+                csrfmiddlewaretoken: csrfToken, 
+                action : action,
+                x : x,
+                fullydata : fullydata
+            },
+            success: function(data) {
+                $('.loadermini-modal svg').fadeOut();
+                $('.sucesso-modal').delay(400).fadeIn();
+                setTimeout(function(){
+                    window.location.reload();
+                }, 300);
+            },
+            error: function(xhr, status, error) {
+                // Erro
+                $('.loadercode').fadeOut();
+                alert('Erro na requisição');
+                console.log('Status: ' + status);
+                console.log('Erro: ' + error);
+            }
+        });
+    }
+
+</script>
+
+{% endblock %} 

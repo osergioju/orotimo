@@ -1,0 +1,57 @@
+<div class="header-loggin-form">
+    <h2>Escolha sua nova senha</h2>
+    <p>Como esse é seu primeiro acesso, cadastre uma nova senha pessoal para faciliar o acesso à plataforma.</p>
+</div>
+<div class="body-loggin-form">
+    <div class="formg_login_first">
+        <label for="2">
+            Nova Senha
+            <input type="password" name="senha_nova" id="1">
+        </label>
+        <p class="disclaimer_input">
+            *Senha de 6 ou mais caracteres, deve conter pelo menos um número, uma letra maiúscula e um caractere especial.
+        </p>
+    </div>
+    <div class="formg_login_first">
+        <label for="3">
+            Confirmar nova senha
+            <input type="password" id="2">
+        </label>
+    </div>
+    <div class="formg_login_first btn_inside-form">
+        <button class="altPass" onclick="getConfirm('changepass')" disabled>Alterar senha</button>
+    </div>
+</div>
+
+<script>
+$("#1").keyup(function(){
+    validarSenha();
+});
+
+$("#2").keyup(function(){
+    validarSenha();
+});
+
+function validarSenha() {
+    var senha = $("#1").val();
+    var confirmarSenha = $("#2").val();
+    var senhaValida = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{6,}$/.test(senha);
+    
+    if (!senhaValida) {
+        $("#1").removeClass("valid-password").addClass("invalid-password");
+        $(".error-message").remove();
+        $(".formg_login_first:first").append('<p class="error-message">A senha não atende aos requisitos.</p>');
+        $("button.altPass").prop("disabled", true);
+    } else {
+        $("#1").removeClass("invalid-password").addClass("valid-password");
+        $(".error-message").remove();
+        if (senha !== confirmarSenha) {
+            $(".formg_login_first:eq(1)").append('<p class="error-message">As senhas não coincidem.</p>');
+            $("button.altPass").prop("disabled", true);
+        } else {
+            $("button.altPass").prop("disabled", false);
+        }
+    }
+}
+</script>
+

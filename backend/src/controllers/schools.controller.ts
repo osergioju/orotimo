@@ -1,13 +1,13 @@
 import type { Request, Response, NextFunction } from 'express'
 import { schoolsService } from '../services/schools.service'
 import { schedulesService } from '../services/schedules.service'
-
-const DEFAULT_OWNER_ID = 'user-1'
+import { accessService } from '../services/access.service'
+import { BadRequestError } from '../lib/errors'
 
 export const schoolsController = {
   async list(req: Request, res: Response, next: NextFunction) {
     try {
-      const ownerId = req.userId ?? DEFAULT_OWNER_ID
+      const ownerId = req.userId!
       const schools = await schoolsService.listMine(ownerId)
       res.json({ schools })
     } catch (error) {
@@ -17,12 +17,11 @@ export const schoolsController = {
 
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const ownerId = req.userId ?? DEFAULT_OWNER_ID
+      const ownerId = req.userId!
       const { name, cnpj, description, logoUrl, unitsCount } = req.body ?? {}
 
       if (!name) {
-        res.status(400).json({ error: 'Nome da escola é obrigatório' })
-        return
+        throw new BadRequestError('Nome da escola é obrigatório')
       }
 
       const school = await schoolsService.create({
@@ -42,13 +41,7 @@ export const schoolsController = {
 
   async getById(req: Request, res: Response, next: NextFunction) {
     try {
-      const school = await schoolsService.getById(req.params.id)
-
-      if (!school) {
-        res.status(404).json({ error: 'Escola não encontrada' })
-        return
-      }
-
+      const school = await accessService.assertSchoolOwnership(req.params.id, req.userId!)
       res.json({ school })
     } catch (error) {
       next(error)
@@ -57,13 +50,7 @@ export const schoolsController = {
 
   async getDashboard(req: Request, res: Response, next: NextFunction) {
     try {
-      const school = await schoolsService.getById(req.params.id)
-
-      if (!school) {
-        res.status(404).json({ error: 'Escola não encontrada' })
-        return
-      }
-
+      const school = await accessService.assertSchoolOwnership(req.params.id, req.userId!)
       const dashboard = await schedulesService.getSchoolDashboard(school.id)
       res.json({ school, ...dashboard })
     } catch (error) {

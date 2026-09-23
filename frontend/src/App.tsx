@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { Login } from './pages/auth/Login'
-import { SystemSelection } from './pages/systems/SystemSelection'
 import { BusinessModelSelection } from './pages/escalas/BusinessModelSelection'
 import { MySchools } from './pages/escola/MySchools'
 import { NewSchool } from './pages/escola/NewSchool'
@@ -15,6 +14,7 @@ import { Horarios } from './pages/escola/configuracoes/Horarios'
 import { DisponibilidadeProfessores } from './pages/escola/configuracoes/DisponibilidadeProfessores'
 import { DisponibilidadeTurmas } from './pages/escola/configuracoes/DisponibilidadeTurmas'
 import { Regras } from './pages/escola/configuracoes/Regras'
+import { Atribuicoes } from './pages/escola/configuracoes/Atribuicoes'
 import { MySchedules } from './pages/escola/escalas/MySchedules'
 import { NewSchedule } from './pages/escola/escalas/NewSchedule'
 import { ScheduleDetail } from './pages/escola/escalas/ScheduleDetail'
@@ -31,7 +31,7 @@ function App() {
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
 
-      <Route path="/sistemas" element={<ProtectedRoute><SystemSelection /></ProtectedRoute>} />
+      <Route path="/sistemas" element={<Navigate to="/escalas" replace />} />
 
       <Route path="/escalas" element={<ProtectedRoute><BusinessModelSelection /></ProtectedRoute>} />
       <Route path="/escalas/escola" element={<ProtectedRoute><MySchools /></ProtectedRoute>} />
@@ -54,6 +54,7 @@ function App() {
         <Route path="configuracoes/disponibilidade-professores" element={<DisponibilidadeProfessores />} />
         <Route path="configuracoes/disponibilidade-turmas" element={<DisponibilidadeTurmas />} />
         <Route path="configuracoes/regras" element={<Regras />} />
+        <Route path="configuracoes/atribuicoes" element={<Atribuicoes />} />
         <Route path="escalas" element={<MySchedules />} />
         <Route path="escalas/nova" element={<NewSchedule />} />
         <Route path="escalas/:scheduleId" element={<ScheduleDetail />} />

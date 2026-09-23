@@ -1,4 +1,7 @@
 import type { NextFunction, Request, Response } from 'express'
+import jwt from 'jsonwebtoken'
+
+const JWT_SECRET = process.env.JWT_SECRET ?? 'change-me'
 
 declare module 'express-serve-static-core' {
   interface Request {
@@ -7,8 +10,7 @@ declare module 'express-serve-static-core' {
 }
 
 /**
- * Autenticação mockada via token simples ("mock-token.<userId>").
- * Estrutura preparada para, futuramente, validar um JWT real no header Authorization.
+ * Valida o JWT emitido em `/auth/login` (assinatura + expiração).
  */
 export function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization
@@ -19,13 +21,12 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
   }
 
   const token = authHeader.replace('Bearer ', '')
-  const [, userId] = token.split('.')
 
-  if (!userId) {
-    res.status(401).json({ error: 'Token de acesso inválido' })
-    return
+  try {
+    const payload = jwt.verify(token, JWT_SECRET) as { sub: string }
+    req.userId = payload.sub
+    next()
+  } catch {
+    res.status(401).json({ error: 'Token de acesso inválido ou expirado' })
   }
-
-  req.userId = userId
-  next()
 }

@@ -1,0 +1,98 @@
+{% extends 'base/baselogin.html' %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+        
+    <div class="superguide_login">
+        <div class="row g-0">
+            <div class="col-12 col-lg-6">
+                <div class="centrallogin-brand">
+                    <a href="#"></a>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="centralform-login">
+                    <div class="groupbox-form">
+                        <div class="header-login-form">
+                            <h1>Seja bem vindo</h1>
+                            <p>Entre com seus dados abaixo para acessar. </p>
+                        </div>
+                        <form method="post" action="{% url 'login' %}">
+                            {% csrf_token %}
+                            <div class="content-login-form">
+                                <div class="formg-login">
+                                    <label for="1">
+                                        E-mail
+                                        <input type="email" name="email" id="1" placeholder="Seu usuário">
+                                    </label>
+                                </div>
+                                <div class="formg-login">
+                                    <label for="2_pass">
+                                        Senha
+                                        <div class="encapsula_pass">
+                                            <input type="password" name="password" id="2_pass" placeholder="Senha">
+                                            <span class="show-password" onclick="togglePasswordVisibility()"></span>    
+                                        </div>
+                                        <div class="link-fgt-senha">
+                                            <a href="{% url 'recuperar_senha' %}">Esqueci minha senha</a>
+                                        </div>
+                                    </label>
+                                </div>
+                                <!--
+                                <div class="formg-login">
+                                    Mantenha me conectado
+                                </div>
+                                -->
+                                <div class="formg-login">
+                                    <button type="submit">Acessar</button>
+                                </div>
+
+                                {% if messages %}
+                                    <div class="bubble_message">
+                                        {% for message in messages %}
+                                            {% if message.tags == 'error' %}
+                                                <div class="error-message">{{ message }}</div>
+                                            {% elif message.tags == 'success' %}
+                                                <div class="success-message">{{ message }}</div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                
+                            </div>
+                        </form>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de validar acesso -->
+    <div class="modal-nocolor">
+        <div class="flexcenterbox-modal">
+            <div class="gradient_box_validate">
+                <div class="header-validatebox">
+                    <h2>Validar acesso</h2>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                </div>
+                <div class="form-validate">
+                    <div class="gpform-validae">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="hiddenfield-validae">
+                        <input type="hidden" id="validae">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %} 

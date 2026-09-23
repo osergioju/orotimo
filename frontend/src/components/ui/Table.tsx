@@ -22,9 +22,9 @@ const alignClasses: Record<'left' | 'right' | 'center', string> = {
 
 export function Table<T extends object>({ columns, data, rowKey, onRowClick }: TableProps<T>) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+    <div className="overflow-x-auto rounded-[28px] border border-brand-divider bg-white">
       <table className="w-full text-left text-sm">
-        <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+        <thead className="bg-brand-canvas text-xs uppercase tracking-wide text-brand-ink-soft">
           <tr>
             {columns.map((column) => (
               <th key={column.key} className={`px-4 py-3 font-medium ${alignClasses[column.align ?? 'left']}`}>
@@ -33,15 +33,15 @@ export function Table<T extends object>({ columns, data, rowKey, onRowClick }: T
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100">
+        <tbody className="divide-y divide-brand-divider">
           {data.map((row) => (
             <tr
               key={rowKey(row)}
               onClick={() => onRowClick?.(row)}
-              className={onRowClick ? 'cursor-pointer hover:bg-slate-50' : ''}
+              className={onRowClick ? 'cursor-pointer hover:bg-brand-canvas' : ''}
             >
               {columns.map((column) => (
-                <td key={column.key} className={`px-4 py-3 text-slate-700 ${alignClasses[column.align ?? 'left']}`}>
+                <td key={column.key} className={`px-4 py-3 text-brand-ink ${alignClasses[column.align ?? 'left']}`}>
                   {column.render ? column.render(row) : String((row as Record<string, unknown>)[column.key] ?? '')}
                 </td>
               ))}

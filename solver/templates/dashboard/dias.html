@@ -1,0 +1,106 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    Dias
+{% endblock %}
+
+{% block content %}
+
+    <!-- Sidebar -->
+    <div class="flexo-dashboar">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-4 col-xl-3">
+                    {% include 'base/sidebar.html' %}
+                </div>
+                <div class="col-12 col-lg-8 col-xl-9">
+
+                    <div class="body-content-dashboard">
+                        {% if 3 in lista_permissoes_cod_tela %}
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="dash1-tab" data-bs-toggle="tab" data-bs-target="#dash1" type="button" role="tab" aria-controls="dash1" aria-selected="true"><i></i> Dias</button>
+                                </li>
+                                <li class="nav-item text-sm" role="presentation">
+                                    <button class="disabled nav-link" id="dash2-tab" data-bs-toggle="tab" data-bs-target="#dash2" type="button" role="tab" aria-controls="dash2" aria-selected="false"><i></i> Vídeo explicativo <small class="rounded-3xl ml-2 bg-[#fe932a] text-xs font-bold inline-block px-2">em breve</small></button>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="fakeloader">
+                                    <div class="centralloader">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" style="shape-rendering: auto; display: block;" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <g>
+                                                <circle cx="50" cy="50" r="32" stroke-width="8" stroke="#000000" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                                                    <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                                                </circle>
+                                                <g></g>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade show active" id="dash1" role="tabpanel" aria-labelledby="dash1-tab">
+                                    <div class="geralbody-dashboard">
+                                        <div class="chosen_quantity">
+                                            <label for="1">
+                                                Quantidade de dias
+                                                <!-- 
+                                                <div class="button-incrasedecesase">
+                                                    <button type="button" onclick="incredec('down', 'Dias')">-</button>
+                                                    <input type="text" class="receive_val" value="{{ page_resultados|length }}">
+                                                    <button type="button"  onclick="incredec('up', 'Dias')">+</button>
+                                                </div>
+                                                -->
+                                            </label>
+                                        </div>
+                                        <div class="bodyfields">
+                                            <div class="repeaterbody-fields">
+                                                <form id="fm" method="post" action="{% url 'dias' id_configuracao=id_conf %}">
+                                                    {% csrf_token %}
+                                                    <div id="repeaterbody-line" class="row">
+                                                        {% for resultado in page_resultados %}
+                                                            <div class="col-12 col-lg-6" id="fatherfield_{{ forloop.counter }}">
+                                                                <div class="formg_math">
+                                                                    <label for="{{ forloop.counter }}">
+                                                                        <h3>Dias {{ forloop.counter }}</h3>
+                                                                        <input class="replace_index" type="hidden" name="iddias_{{ forloop.counter }}" id="{{ forloop.counter }}"  value="{{ resultado.Id_Dia }}">
+                                                                        <input class="replace_index required ckduplicidade" onkeyup="checkdupliciade()"  type="text" name="dias_{{ forloop.counter }}" id="{{ forloop.counter }}"  value="{{ resultado.Nome_Dia }}">
+                                                                        <button type="button" class="removeMe" onclick="removeMe('type1', {{ forloop.counter }})"></button>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                    <div class="addmorefield-generic">
+                                                        <button type="button" onclick="genericAddmore('Dias','type1')">Adicionar campo</button>
+                                                    </div>
+                                                    <input type="hidden" name="counter" id="counter" value="{{ page_resultados|length }}">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="button-savestage">
+                                                                <button type="submit" id="savetudo">Salvar</button>
+                                                                <div class="error-name-profe"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="dash2" role="tabpanel" aria-labelledby="dash2-tab">...</div>
+                            </div>
+                        {% else %}
+                            <div class="nopermission_page">
+                                <i></i>
+                                <h2>Você não tem permissão<Br>para acessar essa página</h2>
+                                <a href="{% url 'administrativo' %}">Voltar a pagina inicial</a>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %} 

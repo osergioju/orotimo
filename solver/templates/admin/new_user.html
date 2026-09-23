@@ -1,0 +1,89 @@
+{% extends 'admin/baseadmin.html' %}
+
+{% block title %}
+    Admin - Novo usuário
+{% endblock %}
+
+{% block content %}
+
+<div class="formerx_adm">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                
+                <div class="bubble-form">
+                    {% if list_escolas|length  == 0 %}
+                        <a href="{% url 'new_escola' %}">Nenhuma escola cadastrada, clique aqui para adicionar uma nova.</a>
+                    {% else %}
+                    <div class="header-formex">
+                        <h2>Adicionar Usuário</h2>
+                    </div>
+                    <div class="body-formex">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="formg_math">
+                                <label for="1">
+                                    Nome
+                                    <input type="text" name="Nome_Usuario" required>
+                                </label>
+                            </div>
+
+                            <div class="formg_math">
+                                <label for="1">
+                                    E-mail
+                                    <input type="text" name="Email_Usuario" required>
+                                </label>
+                            </div>
+
+                            <div class="formg_math">
+                                <label for="1">
+                                    Escola
+                                    <select name="Escolas_Usuario" id="escola_newuser">
+                                        <option selected disabled>--</option>
+                                        {% for escolas in list_escolas %}
+                                            <option value="{{ escolas.Id_Escola }}">{{ escolas.Nome_Escola }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </label>
+                            </div>
+
+                            <div class="formg_math">
+                                <label for="1">
+                                    Unidade
+                                    <select class="disabled_unidadefield" name="Unidade_Usuario" id="unidade_newuser">
+                                        <option selected disabled>--</option>
+                                        {% for unidades in list_unidades %}
+                                            <option data-idescola="{{ unidades.Id_Escola.Id_Escola }}" value="{{ unidades.Id_Unidade }}">{{ unidades.Nome_Unidade }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </label>
+                            </div>
+
+                            <div class="formg_math">
+                                <input type="submit" value="Cadastrar usuário">
+                            </div>
+
+                            {% if messages %}
+                                <div class="bubble_message">
+                                    {% for message in messages %}
+                                        {% if message.tags == 'error' %}
+                                            <div class="error-message">{{ message }}</div>
+                                        {% elif message.tags == 'success' %}
+                                            <div class="success-message">{{ message }}</div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %} 
+

@@ -1,0 +1,450 @@
+{% extends 'base/base.html' %}
+{% load poll_extras %}
+
+{% block title %}
+    Professores
+{% endblock %}
+
+{% block content %}
+
+    <!-- Sidebar -->
+    <div class="flexo-dashboar">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-4 col-xl-3">
+                    {% include 'base/sidebar.html' %}
+                </div>
+                <div class="col-12 col-lg-8 col-xl-9">
+
+                    <div class="body-content-dashboard">
+                        {% if 5 in lista_permissoes_cod_tela %}
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="dash1-tab" data-bs-toggle="tab" data-bs-target="#dash1" type="button" role="tab" aria-controls="dash1" aria-selected="true"><i></i> Professores</button>
+                            </li>
+                            <li class="nav-item text-sm" role="presentation">
+                                <button class="disabled nav-link" id="dash2-tab" data-bs-toggle="tab" data-bs-target="#dash2" type="button" role="tab" aria-controls="dash2" aria-selected="false"><i></i> Vídeo explicativo <small class="rounded-3xl ml-2 bg-[#fe932a] text-xs font-bold inline-block px-2">em breve</small></button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="fakeloader">
+                                <div class="centralloader">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" style="shape-rendering: auto; display: block;" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <g>
+                                            <circle cx="50" cy="50" r="32" stroke-width="8" stroke="#000000" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                                                <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                                            </circle>
+                                            <g></g>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade show active" id="dash1" role="tabpanel" aria-labelledby="dash1-tab">
+                                <form id="fm" method="post" action="{% url 'professores' id_configuracao=id_conf %}">
+                                    <div class="geralbody-dashboard">
+                                        <div class="chosen_quantity">
+                                            <label for="1">
+                                                Quantidade de Professores
+                                                <!--
+                                                <div class="button-incrasedecesase">
+                                                    <button type="button" onclick="incredec('down', 'Materias', 'type3')">-</button>
+                                                    <input type="text" class="receive_val" value="{{ page_resultados|length }}">
+                                                    <button type="button" onclick="incredec('up', 'Materias', 'type3')">+</button>
+                                                </div>
+                                                -->
+                                            </label>
+                                        </div>
+        
+                                        <div class="bodyfields">
+                                            <div class="repeaterbody-fields">
+                                                {% csrf_token %}
+                                                <div id="repeaterbody-line" class="row">
+                                                    
+                                                    {% for resultado in page_resultados %}
+                                                        {% with loop_one=forloop %}
+                                                            <div class="carouseltype2 yosoy_{{ resultado.Id_Professor }}" id="fatherfield_{{ forloop.counter }}">
+                                                                <div class="indice__count">
+                                                                    <span class="spanex_index">{{ forloop.counter }}</span>
+                                                                </div>
+                                                                <div class="unicogenerated-field"> 
+                                                                    <div class="row">
+                                                                        <div class="col-12 col-lg-11"> 
+                                                                            <div class="row">
+
+                                                                                <div class="col-12 col-lg-6"> 
+                                                                                    <input type="hidden" name="id_professor_{{ forloop.counter }}" id="" value="{{ resultado.Id_Professor }}">
+                                                                                    <input type="hidden" name="quantidade_turmas__{{ forloop.counter }}" value="{{ turmas|length }}">
+                                                                                    <input class="ihaveindex" type="hidden" name="quantidade_turmas__{{ forloop.counter }}" data-myindexbloc="{{ forloop.counter }}" value="">
+                                                                                    <div class="formg_math"> 
+                                                                                        <label for="nprofessor_{{ forloop.counter }}"> 
+                                                                                            <h3>Nome</h3> 
+                                                                                            <input class="required name_profe" onkeyup="verificarDuplicidade()"  type="text" name="nprofessor_{{ forloop.counter }}" id="nprofessor_{{ forloop.counter }}" value="{{ resultado.Nome_Professor }}"> 
+                                                                                        </label> 
+                                                                                    </div>  
+                                                                                </div> 
+
+                                                                                <div class="col-12 col-lg-3"> 
+                                                                                    <div class="formg_math"> 
+                                                                                        <label for="preferencia_{{ forloop.counter }}"> 
+                                                                                            <h3>Preferência</h3> 
+                                                                                            {% for item in get_uniqueatribuicoes_join %}
+                                                                                                {% if item.Id_Professor == resultado.Id_Professor %}
+                                                                                                    <input type="text" class="required" name="preferencia_{{ forloop.parentloop.counter }}" id="preferencia_{{ forloop.parentloop.counter }}" value="{% if item.Preferencia == None %} 10 {% else %} {{ item.Preferencia }} {% endif %}">
+                                                                                                {% endif %}
+                                                                                            {% endfor %}
+
+
+                                                                                        </label>
+                                                                                    </div>                                                                 
+                                                                                </div> 
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-12 col-lg-1">
+                                                                            <div class="deletebutton-type2">
+                                                                                <button button type="button" class="removeMe" onclick="removeMe('type3' ,{{ forloop.counter }})"></button>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-12">
+                                                                            <div class="materias___e_turmas">
+                                                                                <div class="header-materiasturmas_repeater">
+                                                                                    <h3>Matérias e turmas</h3>
+                                                                                    <button type="button" onclick="dropdownProfessores(this)">+</button>
+                                                                                </div>
+                                                                                <div class="content_materias_turmas hidden">
+                                                                                    <div class="row">
+                                                                                        <div class="col-12">
+                                                                                            <div class="duplicater_add_div">
+                                                                                                {% for dados in dados_agrupados %}
+                                                                                                    {% if resultado.Id_Professor == dados.id_professor %}
+                                                                                                        {% for materia_id, turmas_id in dados.materias_dados.items %}
+                                                                                                            <div class="relacional_professorxmateria" id="fatherfield_{{ forloop.counter }}_{{ loop_one.counter }}">
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-12 col-lg-12">
+                                                                                                                        <div class="row">
+                                                                                                                            <div class="col-12 col-lg-6"> 
+                                                                                                                                <div class="formg_math"> 
+                                                                                                                                    <label for="mateira_{{ forloop.counter }}_{{ loop_one.counter }}"> 
+                                                                                                                                        <h3>Matéria</h3> 
+                                                                                                                                        <select class="required" name="mateira_{{ forloop.counter }}_{{ loop_one.counter }}" id="mateira_{{ forloop.counter }}_{{ loop_one.counter }}">
+                                                                                                                                            <option selected value="" disabled>---</option>
+                                                                                                                                            {% for getmatrias in materias %}
+                                                                                                                                                <option {% if materia_id == getmatrias.Id_Materia %} selected {% endif %} value="{{ getmatrias.Id_Materia }}">{{ getmatrias.Nome_Materia }}</option>
+                                                                                                                                            {% endfor %}
+                                                                                                                                        </select>
+                                                                                                                                    </label> 
+                                                                                                                                </div> 
+                                                                                                                            </div> 
+                                                                                                                            <div class="col-lg-6">
+                                                                                                                                <div class="deletebutton-type2">
+                                                                                                                                    <button button type="button" class="removeMe" onclick="removeMe('type3', '{{ forloop.counter }}_{{ loop_one.counter }}')"></button>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div class="col-12 col-lg-12"> 
+                                                                                                                                <div class="formg_math"> 
+                                                                                                                                    <label for="1_{{ forloop.counter }}_{{ forloop.parentloop.counter }}">
+                                                                                                                                        <h3>Selecione as turmas</h3> 
+                                                                                                                                        <div class="turmacards-area">
+                                                                                                                                            {% for turma in turmas %}
+                                                                                                                                                <div class="uniqueturma-area">
+                                                                                                                                                    <div class="label-turma">
+                                                                                                                                                        <p>Turma</p>
+                                                                                                                                                        <label class="unicacheck_fielbubble">
+                                                                                                                                                            <input
+                                                                                                                                                            {% for t in turmas_id %}
+                                                                                                                                                                {% if t.id_turma == turma.Id_Turma %}
+                                                                                                                                                                    checked
+                                                                                                                                                                {% endif %}
+                                                                                                                                                            {% endfor %}
+                                                                                                                                                            type="checkbox" class="turmas_selection" onchange="selectionTurmas(this)" name="turmas_{{ loop_one.counter }}_{{ forloop.parentloop.counter }}_{{ turma.Id_Turma }}" value="{{ turma.Id_Turma }}">
+                                                                                                                                                            <div class="beforecarter"></div>
+                                                                                                                                                            <span>{{ turma.Nome_Turma }}</span>
+                                                                                                                                                        </label>
+                                                                                                                                                    </div>
+                                                                                                                                                    
+                                                                                                                                                    <div class="maximo_dayli">
+                                                                                                                                                        <p>Qnt. Max de aulas Diárias</p>
+                                                                                                                                                        <input oninput="validarValor(this)" type="text" name="qntmax_{{ loop_one.counter }}_{{ forloop.parentloop.counter }}_{{ turma.Id_Turma }}" id="qntmax_{{ loop_one.counter }}_{{ forloop.parentloop.counter }}_{{ turma.Id_Turma }}" 
+                                                                                                                                                        value="{% for t in turmas_id %}{% if t.id_turma == turma.Id_Turma %}{{ t.qnt_max }}{% endif %}{% endfor %}">
+                                                                                                                                                    </div>
+                                                                                                                                                </div>
+                                                                                                                                            {% endfor %}
+                                                                                                                                            <div class="quantas_turmas_selected">
+                                                                                                                                                <div class="spanerror_turmas">
+                                                                                                                                                    
+                                                                                                                                                </div>
+                                                                                                                                                <input type="text" name="receive_qnt_turmas_selected" value="1" class="required">
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    </label>
+                                                                                                                                </div> 
+                                                                                                                            </div> 
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        {% endfor %}
+                                                                                                    {% endif %}
+                                                                                                {% endfor %}
+                                                                                                <div class="duplicator_turmas_materias">
+                                                                                                    <button type="button" onclick="duplicatormaximus(this, 0)" class="duplicatormaximus">Adicionar matéria +</button>
+                                                                                                    {% for dados in dados_agrupados %}
+                                                                                                        {% if resultado.Id_Professor == dados.id_professor %}
+                                                                                                            <input type="hidden" class="count_materias" name="count_materias_all_{{ forloop.counter }}" value="{{ dados.materias_dados|length }}">
+                                                                                                        {% endif %}
+                                                                                                    {% endfor %}
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            
+                                                                        </div>
+                                
+                                                                    </div>
+                                                                </div>
+                                                                <input type="hidden" value="break" name="break">
+                                                            </div>
+                                                        {% endwith %}
+                                                    {% endfor %}
+                                                </div>
+                                                <div class="addmorefield-generic">
+                                                    <button type="button" onclick="genericAddmore('Materias','type3')">Adicionar professor</button>
+                                                </div>
+                                                <input type="hidden" name="counter" id="counter" value="{{ page_resultados|length }}">
+                                                <input type="hidden" name="counter_turmas" id="counter_turmas" value="{{ get_turmas|length }}">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="button-savestage">
+                                                            <button type="button" id="savetudo" onclick="montarArray()">Salvar</button>
+                                                            <div class="error-name-profe"></div>
+                                                            <button type="submit" class="opacityabs" id="fakeclick" onclick="checkturmas()">Salvar</button>
+                                                            <input type="text" class="opacityabs" name="d" id="d">
+                                                            <span id="receive_error"></span>
+                                                        </div>
+                                                    </div>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane fade" id="dash2" role="tabpanel" aria-labelledby="dash2-tab">...</div>
+                        </div>
+                        {% else %}
+                            <div class="nopermission_page">
+                                <i></i>
+                                <h2>Você não tem permissão<Br>para acessar essa página</h2>
+                                <a href="{% url 'administrativo' %}">Voltar a pagina inicial</a>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="hiddenfield-copy">
+                        <!-- Copiar mini -->
+                        <div class="relacional_professorxmateria coopyx_max" id="">
+                            <div class="row">
+                                <div class="col-12 col-lg-12">
+                                    <div class="row">
+                                        <div class="col-12 col-lg-6"> 
+                                            <div class="formg_math"> 
+                                                <label for="mateira_REPLACEINDEX_newreplaceindex"> 
+                                                    <h3>Matéria</h3> 
+                                                    <select class="required" name="mateira_REPLACEINDEX_newreplaceindex" id="mateira_REPLACEINDEX_newreplaceindex">
+                                                        <option value=""  selected disabled>---</option>
+                                                        {% for materia in materias %}
+                                                            <option value="{{ materia.Id_Materia }}">{{ materia.Nome_Materia }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </label> 
+                                            </div> 
+                                        </div> 
+                                        <div class="col-lg-6">
+                                            <div class="deletebutton-type2">
+                                                <button button type="button" class="removeMe" onclick="removeMe('type3', REPLACEINDEXnewreplaceindex)"></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-12"> 
+                                            <div class="formg_math"> 
+                                                <label for="1_REPLACEINDEX_newreplaceindex"> 
+                                                    <h3>Turmas</h3> 
+                                                    <div class="turmacards-area">
+                                                        {% for turma in turmas %}
+
+                                                            <div class="uniqueturma-area">
+                                                                <div class="label-turma">
+                                                                    <p>Turma</p>
+                                                                    <label class="unicacheck_fielbubble">
+                                                                        <input class="turmas_selection" type="checkbox" onchange="selectionTurmas(this)" name="turmas_REPLACEINDEX_newreplaceindex_{{ turma.Id_Turma }}" value="{{ turma.Id_Turma }}">
+                                                                        <div class="beforecarter"></div>
+                                                                        <span>{{ turma.Nome_Turma }}</span>
+                                                                    </label>
+                                                                </div>
+                                                                
+                                                                <div class="maximo_dayli">
+                                                                    <p>Qnt. Max de aulas Diárias</p>
+                                                                    <input oninput="validarValor(this)" type="text" name="qntmax_REPLACEINDEX_newreplaceindex_{{ turma.Id_Turma }}" id="qntmax_REPLACEINDEX_newreplaceindex_{{ turma.Id_Turma }}" value="2">
+                                                                </div>
+                                                            </div>
+
+                                                        {% endfor %}
+                                                        <div class="quantas_turmas_selected">
+                                                            <div class="spanerror_turmas">
+                                                                
+                                                            </div>
+                                                            <input type="text" name="receive_qnt_turmas_selected" class="required">
+                                                        </div>
+
+                                                    </div>
+                                                </label> 
+                                                
+                                            </div> 
+                                        </div> 
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="turmas_relational" data-receiveturma="turmas_REPLACEINDEX_newreplaceindex">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Copiar super grand -->
+                        <div class="carouseltype2 fieldto-copy">
+                            <div class="indice__count">
+                                <span class="spanex_index">REPLACEINDEX</span>
+                            </div>
+                            <div class="unicogenerated-field"> 
+                                <div class="row">
+                                    <input class="ihaveindex" type="hidden" name="quantidade_turmas__REPLACEINDEX" data-myindexbloc="REPLACEINDEX" value="{{ turmas|length }}">
+                                    <div class="col-12 col-lg-11">
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6"> 
+                                                <input type="hidden" name="id_professor_REPLACEINDEX" id="" value="">
+                                                <div class="formg_math"> 
+                                                    <label for="nprofessor_REPLACEINDEX"> 
+                                                        <h3>Nome</h3> 
+                                                        <input type="text" class="name_profe replace_index required" onkeyup="verificarDuplicidade()"  name="nprofessor_REPLACEINDEX" id="nprofessor_REPLACEINDEX" value=""> 
+                                                    </label> 
+                                                </div> 
+                                            </div> 
+                                            <div class="col-12 col-lg-3"> 
+                                                <div class="formg_math"> 
+                                                    <label for="preferencia_REPLACEINDEX"> 
+                                                        <h3>Preferência</h3> 
+                                                        <input class="replace_index required" type="text" name="preferencia_REPLACEINDEX" id="preferencia_REPLACEINDEX" value=""> 
+                                                    </label> 
+                                                </div> 
+                                            </div> 
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-1">
+                                        <div class="deletebutton-type2">
+                                            <button button type="button" class="removeMe" onclick="removeMe('type3' ,REPLACEINDEX)"></button>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+
+                                        <div class="materias___e_turmas">
+                                            <div class="header-materiasturmas_repeater">
+                                                <h3>Matérias e turmas</h3>
+                                                <button type="button" onclick="dropdownProfessores(this)">+</button>
+                                            </div>
+                                            <div class="content_materias_turmas hidden" >
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="duplicater_add_div">
+                                                            <div class="relacional_professorxmateria" id="fatherfield_1_REPLACEINDEX">
+                                                                <div class="row">
+                                                                    <div class="col-12 col-lg-12">
+                                                                        <div class="row">
+                                                                            <div class="col-12 col-lg-6"> 
+                                                                                <div class="formg_math"> 
+                                                                                    <label for="mateira_1_REPLACEINDEX"> 
+                                                                                        <h3>Matéria</h3> 
+                                                                                        <select class="required" name="mateira_1_REPLACEINDEX" id="mateira_1_REPLACEINDEX">
+                                                                                            <option value=""  selected disabled>---</option>
+                                                                                            {% for materia in materias %}
+                                                                                                <option value="{{ materia.Id_Materia }}">{{ materia.Nome_Materia }}</option>
+                                                                                            {% endfor %}
+                                                                                        </select>
+                                                                                    </label> 
+                                                                                </div> 
+                                                                            </div> 
+                                                                            <div class="col-12 col-lg-12"> 
+                                                                                <div class="formg_math"> 
+                                                                                    <label for="1_REPLACEINDEX_1"> 
+                                                                                        <h3>Turmas</h3> 
+                                                                                        <div class="turmacards-area">
+                                                                                            {% for turma in turmas %}
+                                                                                                <div class="uniqueturma-area">
+                                                                                                    <div class="label-turma">
+                                                                                                        <p>Turma</p>
+                                                                                                        <label class="unicacheck_fielbubble">
+                                                                                                            <input class="turmas_selection" onchange="selectionTurmas(this)" type="checkbox" name="turmas_1_REPLACEINDEX_{{ turma.Id_Turma }}" value="{{ turma.Id_Turma }}">
+                                                                                                            <div class="beforecarter"></div>
+                                                                                                            <span>{{ turma.Nome_Turma }}</span>
+                                                                                                        </label>
+                                                                                                    </div>
+                                                                                                    
+                                                                                                    <div class="maximo_dayli">
+                                                                                                        <p>Qnt. Max de aulas Diárias</p>
+                                                                                                        <input oninput="validarValor(this)"  type="text" name="qntmax_1_REPLACEINDEX_{{ turma.Id_Turma }}" id="qntmax_1_REPLACEINDEX_{{ turma.Id_Turma }}" value="2">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            {% endfor %}
+                                                                                            <div class="quantas_turmas_selected">
+                                                                                                <div class="spanerror_turmas">
+                                                                                                    
+                                                                                                </div>
+                                                                                                <input type="text" name="receive_qnt_turmas_selected" class="required">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </label> 
+                                                                                </div> 
+                                                                            </div> 
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-12">
+                                                                        <div class="turmas_relational" data-receiveturma="turmas_REPLACEINDEX_1">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+    
+                                                            <div class="duplicator_turmas_materias">
+                                                                <button type="button" onclick="duplicatormaximus(this, 0)" class="duplicatormaximus">Adicionar matéria +</button>
+                                                                <input type="hidden" class="count_materias" name="count_materias_all_REPLACEINDEX" value="1">
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="col-12">
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                            <input type="hidden" value="break" name="break">
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <pre>
+        {{ json_resultados|safe }}
+    </pre>
+{% endblock %} 

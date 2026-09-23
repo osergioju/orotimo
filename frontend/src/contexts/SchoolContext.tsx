@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useState, type ReactNode } from 'react'
 import type { School } from '../types'
 
 const CURRENT_SCHOOL_KEY = 'scale-engine:current-school'
@@ -17,15 +17,15 @@ export function SchoolProvider({ children }: { children: ReactNode }) {
     return stored ? JSON.parse(stored) : null
   })
 
-  function setCurrentSchool(school: School) {
+  const setCurrentSchool = useCallback((school: School) => {
     sessionStorage.setItem(CURRENT_SCHOOL_KEY, JSON.stringify(school))
     setCurrentSchoolState(school)
-  }
+  }, [])
 
-  function clearCurrentSchool() {
+  const clearCurrentSchool = useCallback(() => {
     sessionStorage.removeItem(CURRENT_SCHOOL_KEY)
     setCurrentSchoolState(null)
-  }
+  }, [])
 
   return (
     <SchoolContext.Provider value={{ currentSchool, setCurrentSchool, clearCurrentSchool }}>

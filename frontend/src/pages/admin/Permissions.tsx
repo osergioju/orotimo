@@ -43,8 +43,8 @@ export function Permissions() {
     return (
       <div className="flex flex-col gap-6">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-900">Permissões</h1>
-          <p className="mt-1 text-sm text-slate-500">Selecione um usuário para configurar os sistemas habilitados</p>
+          <h1 className="text-2xl font-semibold text-brand-ink">Permissões</h1>
+          <p className="mt-1 text-sm text-brand-ink-soft">Selecione um usuário para configurar os sistemas habilitados</p>
         </div>
         <Table columns={columns} data={users} rowKey={(row) => row.id} onRowClick={(row) => navigate(`/admin/permissoes/${row.id}`)} />
       </div>
@@ -56,19 +56,19 @@ export function Permissions() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-2xl font-semibold text-slate-900">Permissões</h1>
-        <p className="mt-1 text-sm text-slate-500">Usuário: {user?.name ?? userId}</p>
+        <h1 className="text-2xl font-semibold text-brand-ink">Permissões</h1>
+        <p className="mt-1 text-sm text-brand-ink-soft">Usuário: {user?.name ?? userId}</p>
       </div>
 
       <Card>
         <CardBody className="flex flex-col gap-3">
           {permissions.map((permission) => (
-            <label key={permission.systemId} className="flex items-center gap-3 text-sm text-slate-700">
+            <label key={permission.systemId} className="flex items-center gap-3 text-sm text-brand-ink">
               <input
                 type="checkbox"
                 checked={permission.enabled}
                 onChange={() => togglePermission(permission)}
-                className="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                className="h-4 w-4 rounded border-brand-border accent-brand-primary focus:ring-brand-primary/40"
               />
               {permission.systemName}
             </label>

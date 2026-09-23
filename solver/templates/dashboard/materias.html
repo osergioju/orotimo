@@ -1,0 +1,383 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    Matérias
+{% endblock %}
+
+{% block content %}
+
+    <!-- Sidebar -->
+    <div class="flexo-dashboar">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-4 col-xl-3">
+                    {% include 'base/sidebar.html' %}
+                </div>
+                <div class="col-12 col-lg-8 col-xl-9">
+
+                    <div class="body-content-dashboard">
+                        {% if 4 in lista_permissoes_cod_tela %}
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="dash1-tab" data-bs-toggle="tab" data-bs-target="#dash1" type="button" role="tab" aria-controls="dash1" aria-selected="true"><i></i> Matérias</button>
+                            </li>
+                            <li class="nav-item text-sm" role="presentation">
+                                <button class="disabled nav-link" id="dash2-tab" data-bs-toggle="tab" data-bs-target="#dash2" type="button" role="tab" aria-controls="dash2" aria-selected="false"><i></i> Vídeo explicativo <small class="rounded-3xl ml-2 bg-[#fe932a] text-xs font-bold inline-block px-2">em breve</small></button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="fakeloader">
+                                <div class="centralloader">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" style="shape-rendering: auto; display: block;" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <g>
+                                            <circle cx="50" cy="50" r="32" stroke-width="8" stroke="#000000" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                                                <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                                            </circle>
+                                            <g></g>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade show active" id="dash1" role="tabpanel" aria-labelledby="dash1-tab">
+                                <form id="fm" method="post" action="{% url 'materias' id_configuracao=id_conf %}">
+                                    <div class="geralbody-dashboard">
+                                        <div class="chosen_quantity">
+                                            <label for="1">
+                                                Quantidade de matérias
+                                                <!--
+                                                <div class="button-incrasedecesase">
+                                                    <button type="button" onclick="incredec('down', 'Materias', 'type2')">-</button>
+                                                    <input type="text" class="receive_val" value="{{ page_resultados|length }}">
+                                                    <button type="button" onclick="incredec('up', 'Materias', 'type2')">+</button>
+                                                </div>
+                                                -->
+                                            </label>
+                                        </div>
+                                        <div class="bodyfields">
+                                            <div class="repeaterbody-fields">
+                                                {% csrf_token %}
+                                                <div id="repeaterbody-line" class="row">
+                                                    {% for resultado in page_resultados %}
+                                                        {% with loop_one=forloop %}
+                                                            <div class="carouseltype2" id="fatherfield_{{ forloop.counter }}">
+                                                                <div class="indice__count">
+                                                                    <span class="spanex_index">{{ forloop.counter }}</span>
+                                                                </div>
+                                                                <div class="unicogenerated-field"> 
+                                                                    <div class="row">
+                                                                        <div class="col-12 col-lg-6">
+                                                                            <div class="row">
+                                                                                <div class="col-12">
+                                                                                    <input type="hidden" class="id_conteudo" name="idmateria_{{ forloop.counter }}" value="{{ resultado.Id_Materia }}">
+                                                                                </div>
+                                                                                <div class="col-12 col-lg-6"> 
+                                                                                    <div class="formg_math"> 
+                                                                                        <label for="0_{{ forloop.counter }}"> 
+                                                                                            <h3>Matéria</h3> 
+                                                                                            <input type="text" class="replace_index required ckduplicidade" onkeyup="checkdupliciade()" name="materia_{{ forloop.counter }}" id="0_{{ forloop.counter }}" value="{{ resultado.Nome_Materia }}"> 
+                                                                                        </label> 
+                                                                                    </div> 
+                                                                                </div> 
+                                                                                <div class="col-12 col-lg-6"> 
+                                                                                    <div class="formg_math"> 
+                                                                                        <label for="1_{{ forloop.counter }}"> 
+                                                                                            <h3>Preferência</h3> 
+                                                                                            <input type="text" class="replace_index required" name="preferencia_{{ forloop.counter }}" id="1_{{ forloop.counter }}" value="{{ resultado.Preferencia }}"> 
+                                                                                        </label> 
+                                                                                    </div> 
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-12 col-lg-6">
+                                                                            <div class="deletebutton-type2">
+                                                                                <button button type="button" class="removeMe" onclick="removeMe('type2' ,{{ forloop.counter }})"></button>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-12"> 
+                                                                            <div class="flex_multipleturmas">
+                                                                                {% for turmas in get_turmas %}
+                                                                                    {% with loop_two=forloop %}     
+                                                                                        <div class="formg_math miniform_g" data-idturma="{{ turmas.Id_Turma }}" data-idmateria="{{ resultado.Id_Materia }}"> 
+                                                                                            <h4>{{ turmas.Nome_Turma }}</h4>
+                                                                                            <input type="hidden" class="id_minifor" name="idturma_{{ loop_two.counter }}_{{ loop_two.parentloop.counter }}" value="{{ turmas.Id_Turma }}"> 
+                                                                                            <label for="turma_{{ loop_two.counter }}_{{ turmas.Id_Turma }}">
+                                                                                                <span>Qnt min. (semanal)</span>
+                                                                                                <input oninput="validarValor(this)" class="replace_index_level2 required" id="" value="{{ restricoes.Qtd_Minima_Semanal  }}" type="text" id="minturma_{{ loop_two.counter }}_{{ loop_one.counter }}" name="minturma_{{ loop_two.counter }}_{{ loop_one.counter }}">
+                                                                                            </label>
+                                                                                            <input class="required" value="2" type="hidden" id="maxturma_{{ loop_two.counter }}_{{ loop_one.counter }}" name="maxturma_{{ loop_two.counter }}_{{ loop_one.counter }}">
+                                                                                        </div>
+                                                                                    {% endwith %}
+                                                                                {% endfor %}
+                                                                            </div>
+                                                                        </div> 
+
+                                                                    </div> 
+                                                                </div>
+                                                            </div>
+                                                        {% endwith %}
+                                                    {% endfor %}
+                                                </div>
+                                                <div class="addmorefield-generic">
+                                                    <button type="button" onclick="genericAddmore('Materias','type2')">Adicionar matéria</button>
+                                                </div>
+                                                <input type="hidden" name="counter" id="counter" value="{{ page_resultados|length }}">
+                                                <input type="hidden" name="counter_turmas" id="counter_turmas" value="{{ get_turmas|length }}">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="button-savestage">
+                                                            <button type="submit" id="savetudo">Salvar</button>
+                                                            <div class="error-name-profe"></div>
+                                                        </div>
+                                                    </div>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane fade" id="dash2" role="tabpanel" aria-labelledby="dash2-tab">...</div>
+                        </div>
+                        {% else %}
+                            <div class="nopermission_page">
+                                <i></i>
+                                <h2>Você não tem permissão<Br>para acessar essa página</h2>
+                                <a href="{% url 'administrativo' %}">Voltar a pagina inicial</a>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="hiddenfield-copy">
+                        <div class="carouseltype2 fieldto-copy">
+                            <div class="indice__count">
+                                <span class="spanex_index">REPLACEINDEX</span>
+                            </div>
+                            <div class="unicogenerated-field"> 
+                                <div class="row">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6"> 
+                                                <div class="formg_math"> 
+                                                    <label for="0_REPLACEINDEX"> 
+                                                        <h3>Matéria</h3> 
+                                                        <input type="text" class="replace_index required ckduplicidade" onkeyup="checkdupliciade()"  name="materia_REPLACEINDEX" id="0_REPLACEINDEX" value=""> 
+                                                    </label> 
+                                                </div> 
+                                            </div> 
+                                            <div class="col-12 col-lg-6"> 
+                                                <div class="formg_math"> 
+                                                    <label for="1_REPLACEINDEX"> 
+                                                        <h3>Preferência</h3> 
+                                                        <input type="text" class="replace_index required" name="preferencia_REPLACEINDEX" id="1_REPLACEINDEX" value="10"> 
+                                                    </label>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="deletebutton-type2">
+                                            <button button type="button" class="removeMe" onclick="removeMe('type2' ,REPLACEINDEX)"></button>
+                                        </div>
+                                    </div>
+                                    <div class="col-12"> 
+                                        <div class="flex_multipleturmas">
+                                            {% for turmas in get_turmas %}
+                                                <div class="formg_math miniform_g"> 
+                                                    <h4>{{ turmas.Nome_Turma }}</h4>
+                                                    <input type="hidden" class="id_minifor" value="{{ turmas.Id_Turma }}" name="idturma_{{ forloop.counter }}_REPLACEINDEX">
+                                                    <label for="minturma_{{ forloop.counter }}_REPLACEINDEX">
+                                                        <span>Qnt min. (semanal)</span>
+                                                        <input oninput="validarValor(this)" type="text" class="replace_index_level2 required" id="minturma_{{ forloop.counter }}_REPLACEINDEX" name="minturma_{{ forloop.counter }}_REPLACEINDEX">
+                                                    </label>
+                                                    <input type="hidden" class="required" id="maxturma_{{ forloop.counter }}_REPLACEINDEX" name="maxturma_{{ forloop.counter }}_REPLACEINDEX" value="2">
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div> 
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const data = {{ json_materias|safe }};
+        // Function to update the input values
+        function updateInputs() {
+            const forms = document.querySelectorAll('.miniform_g');
+
+            forms.forEach(form => {
+                const idTurma = form.getAttribute('data-idturma');
+                const idMateria = form.getAttribute('data-idmateria');
+                
+                if(idTurma){
+                    const match = data.find(item => item.Id_Turma == idTurma && item.Id_Materia == idMateria);
+
+                    if (match) {
+                        const input = form.querySelector('input[name^="minturma"]');
+                        if (input) {
+                            input.value = match.Qtd_Minima_Semanal;
+                        }
+                    }
+                }
+                
+            });
+        }
+
+        // Call the function to update the input values
+        document.addEventListener('DOMContentLoaded', updateInputs);
+    </script>
+    
+{% endblock %} 
+<!-- 
+
+
+
+<div class="carouseltype2" id="fatherfield_16">
+    <div class="indice__count">
+        <span class="spanex_index">16</span>
+    </div>
+    <div class="unicogenerated-field"> 
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <div class="row">
+                    <div class="col-12 col-lg-6"> 
+                        <div class="formg_math"> 
+                            <label for="0_16"> 
+                                <h3>Matéria</h3> 
+                                <input type="text" class="replace_index required" name="materia_16" id="0_16" value=""> 
+                            </label> 
+                        </div> 
+                    </div> 
+                    <div class="col-12 col-lg-6"> 
+                        <div class="formg_math"> 
+                            <label for="1_16"> 
+                                <h3>Preferência</h3> 
+                                <input type="text" class="replace_index required" name="preferencia_16" id="1_16" value="10"> 
+                            </label>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="deletebutton-type2">
+                    <button button="" type="button" class="removeMe" onclick="removeMe('type2' ,16)"></button>
+                </div>
+            </div>
+            <div class="col-12"> 
+                <div class="flex_multipleturmas">
+                    
+                        <div class="formg_math miniform_g"> 
+                            <h4>6</h4>
+                            <input type="hidden" class="id_minifor" value="146" name="idturma_1_16">
+                            <label for="minturma_1_16">
+                                <span>Qnt min. (semanal)</span>
+                                <input type="text" class="replace_index_level2 required" id="minturma_1_16" name="minturma_1_16">
+                            </label>
+                            <input type="hidden" class="required" id="maxturma_1_16" name="maxturma_1_16" value="2">
+                        </div>
+                    
+                        <div class="formg_math miniform_g"> 
+                            <h4>7</h4>
+                            <input type="hidden" class="id_minifor" value="147" name="idturma_2_16">
+                            <label for="minturma_2_16">
+                                <span>Qnt min. (semanal)</span>
+                                <input type="text" class="replace_index_level2 required" id="minturma_2_16" name="minturma_2_16">
+                            </label>
+                            <input type="hidden" class="required" id="maxturma_2_16" name="maxturma_2_16" value="2">
+                        </div>
+                    
+                        <div class="formg_math miniform_g"> 
+                            <h4>8</h4>
+                            <input type="hidden" class="id_minifor" value="148" name="idturma_3_16">
+                            <label for="minturma_3_16">
+                                <span>Qnt min. (semanal)</span>
+                                <input type="text" class="replace_index_level2 required" id="minturma_3_16" name="minturma_3_16">
+                            </label>
+                            <input type="hidden" class="required" id="maxturma_3_16" name="maxturma_3_16" value="2">
+                        </div>
+                    
+                </div>
+            </div> 
+        </div> 
+    </div>
+</div>
+
+
+
+<div class="carouseltype2" id="fatherfield_16">
+    <div class="indice__count">
+        <span class="spanex_index">16</span>
+    </div>
+    <div class="unicogenerated-field"> 
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <div class="row">
+                    <div class="col-12 col-lg-6"> 
+                        <div class="formg_math"> 
+                            <label for="0_16"> 
+                                <h3>Matéria</h3> 
+                                <input type="text" class="replace_index required" name="materia_16" id="16_16" value=""> 
+                            </label> 
+                        </div> 
+                    </div> 
+                    <div class="col-12 col-lg-6"> 
+                        <div class="formg_math"> 
+                            <label for="1_16"> 
+                                <h3>Preferência</h3> 
+                                <input type="text" class="replace_index required" name="preferencia_16" id="16_16" value="10"> 
+                            </label>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="deletebutton-type2">
+                    <button button="" type="button" class="removeMe" onclick="removeMe('type2' ,16)"></button>
+                </div>
+            </div>
+            <div class="col-12"> 
+                <div class="flex_multipleturmas">
+                    
+                        <div class="formg_math miniform_g"> 
+                            <h4>6</h4>
+                            <input type="hidden" class="id_minifor" value="146" name="minturma_1_16">
+                            <label for="minturma_1_16">
+                                <span>Qnt min. (semanal)</span>
+                                <input type="text" class="replace_index_level2 required" id="minturma_1_16" name="minturma_1_16">
+                            </label>
+                            <input type="hidden" class="required" id="maxturma_1_16" name="maxturma_1_16" value="2">
+                        </div>
+                    
+                        <div class="formg_math miniform_g"> 
+                            <h4>7</h4>
+                            <input type="hidden" class="id_minifor" value="147" name="minturma_2_16">
+                            <label for="minturma_2_16">
+                                <span>Qnt min. (semanal)</span>
+                                <input type="text" class="replace_index_level2 required" id="minturma_2_16" name="minturma_2_16">
+                            </label>
+                            <input type="hidden" class="required" id="maxturma_2_16" name="maxturma_2_16" value="2">
+                        </div>
+                    
+                        <div class="formg_math miniform_g"> 
+                            <h4>8</h4>
+                            <input type="hidden" class="id_minifor" value="148" name="minturma_3_16">
+                            <label for="minturma_3_16">
+                                <span>Qnt min. (semanal)</span>
+                                <input type="text" class="replace_index_level2 required" id="minturma_3_16" name="minturma_3_16">
+                            </label>
+                            <input type="hidden" class="required" id="maxturma_3_16" name="maxturma_3_16" value="2">
+                        </div>
+                    
+                </div>
+            </div> 
+        </div> 
+    </div>
+</div>
+
+-->

@@ -6,7 +6,7 @@ export interface CreateSchoolInput {
   name: string
   cnpj: string
   description: string
-  logoUrl?: string
+  logoUrl?: string | null
   unitsCount: number
 }
 
@@ -15,11 +15,11 @@ export const schoolsService = {
     return schoolsRepository.listByOwner(ownerId)
   },
 
-  async getById(id: string): Promise<School | undefined> {
+  async getById(id: string): Promise<School | null> {
     return schoolsRepository.findById(id)
   },
 
   async create(input: CreateSchoolInput): Promise<School> {
-    return schoolsRepository.create(input)
+    return schoolsRepository.create({ ...input, logoUrl: input.logoUrl ?? null })
   },
 }
