@@ -5,3 +5,10 @@ build/
 .env.local
 *.log
 .DS_Store
+
+# Solver: venv é específico da plataforma (não roda numa VPS Linux vindo de um
+# clone feito em macOS/ARM) — sempre recriar com `pip install -r requirements.txt`.
+solver/venv/
+solver/**/__pycache__/
+solver/*.pyc
+solver/db.sqlite3
