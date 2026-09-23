@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { ProtectedRoute } from './components/ProtectedRoute'
+import { AdminRoute } from './components/AdminRoute'
 import { Login } from './pages/auth/Login'
 import { BusinessModelSelection } from './pages/escalas/BusinessModelSelection'
 import { MySchools } from './pages/escola/MySchools'
@@ -24,6 +25,7 @@ import { Users } from './pages/admin/Users'
 import { Systems } from './pages/admin/Systems'
 import { Permissions } from './pages/admin/Permissions'
 import { AdminSchools } from './pages/admin/AdminSchools'
+import { AdminSchoolMembers } from './pages/admin/AdminSchoolMembers'
 
 function App() {
   return (
@@ -60,13 +62,21 @@ function App() {
         <Route path="escalas/:scheduleId" element={<ScheduleDetail />} />
       </Route>
 
-      <Route path="/admin" element={<AdminLayout />}>
+      <Route
+        path="/admin"
+        element={
+          <AdminRoute>
+            <AdminLayout />
+          </AdminRoute>
+        }
+      >
         <Route index element={<AdminDashboard />} />
         <Route path="usuarios" element={<Users />} />
         <Route path="sistemas" element={<Systems />} />
         <Route path="permissoes" element={<Permissions />} />
         <Route path="permissoes/:userId" element={<Permissions />} />
         <Route path="escolas" element={<AdminSchools />} />
+        <Route path="escolas/:schoolId" element={<AdminSchoolMembers />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/login" replace />} />

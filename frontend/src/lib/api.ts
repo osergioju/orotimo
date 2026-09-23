@@ -1,4 +1,5 @@
 import type {
+  AdminStats,
   Assignment,
   Class,
   ClassAvailabilitySlot,
@@ -7,12 +8,14 @@ import type {
   Schedule,
   ScheduleSolution,
   School,
+  SchoolMember,
   Subject,
   SystemModule,
   Teacher,
   TeacherAvailabilitySlot,
   TimeSlot,
   User,
+  UserRole,
 } from '../types'
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api'
@@ -277,8 +280,36 @@ export const api = {
     await request<void>(`/assignments/${id}`, { method: 'DELETE' })
   },
 
+  async adminGetStats() {
+    return request<AdminStats>('/admin/stats')
+  },
+
   async adminListUsers() {
     return request<{ users: User[] }>('/admin/users')
+  },
+
+  async adminCreateUser(input: { name: string; email: string; password: string; role?: UserRole }) {
+    return request<{ user: User }>('/admin/users', {
+      method: 'POST',
+      body: JSON.stringify(input),
+    })
+  },
+
+  async adminListSchoolMembers(schoolId: string) {
+    return request<{ owner: { id: string; name: string; email: string }; members: SchoolMember[] }>(
+      `/admin/schools/${schoolId}/members`,
+    )
+  },
+
+  async adminAddSchoolMember(schoolId: string, email: string) {
+    return request<{ member: SchoolMember }>(`/admin/schools/${schoolId}/members`, {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    })
+  },
+
+  async adminRemoveSchoolMember(schoolId: string, userId: string) {
+    await request<void>(`/admin/schools/${schoolId}/members/${userId}`, { method: 'DELETE' })
   },
 
   async adminListSystems() {

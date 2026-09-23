@@ -176,6 +176,3 @@ export function Login() {
     </div>
   )
 }
-
-sudo - u postgres psql - c "CREATE USER orotimo WITH PASSWORD
-/// 'WNBI32YHJWIBEG82YU12123WASJDBVU2YI@#@#KNBQWEU8C9UEIJ2KES';"

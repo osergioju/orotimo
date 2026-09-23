@@ -1,7 +1,25 @@
+export type UserRole = 'admin' | 'user'
+
 export interface User {
   id: string
   name: string
   email: string
+  role: UserRole
+}
+
+export interface SchoolMember {
+  id: string
+  userId: string
+  name: string
+  email: string
+}
+
+export interface AdminStats {
+  users: number
+  schools: number
+  teachers: number
+  schedules: number
+  admins: number
 }
 
 export type SystemStatus = 'active' | 'coming_soon'
@@ -23,6 +41,8 @@ export interface School {
   logoUrl?: string
   unitsCount: number
   createdAt: string
+  owner?: { id: string; name: string; email: string }
+  _count?: { members: number }
 }
 
 export type ScheduleStatus = 'draft' | 'generating' | 'generated' | 'failed'

@@ -2,8 +2,11 @@ import { prisma } from '../lib/prisma'
 import type { School } from '../models/school.model'
 
 export const schoolsRepository = {
-  async listByOwner(ownerId: string): Promise<School[]> {
-    return prisma.school.findMany({ where: { ownerId }, orderBy: { createdAt: 'asc' } })
+  async listAccessibleByUser(userId: string): Promise<School[]> {
+    return prisma.school.findMany({
+      where: { OR: [{ ownerId: userId }, { members: { some: { userId } } }] },
+      orderBy: { createdAt: 'asc' },
+    })
   },
 
   async findById(id: string): Promise<School | null> {

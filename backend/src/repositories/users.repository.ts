@@ -10,7 +10,14 @@ export const usersRepository = {
     return prisma.user.findUnique({ where: { id } })
   },
 
-  async list(): Promise<User[]> {
-    return prisma.user.findMany({ orderBy: { createdAt: 'asc' } })
+  async list(): Promise<Omit<User, 'passwordHash'>[]> {
+    return prisma.user.findMany({
+      orderBy: { createdAt: 'asc' },
+      select: { id: true, name: true, email: true, role: true, createdAt: true },
+    })
+  },
+
+  async create(input: { name: string; email: string; passwordHash: string; role?: User['role'] }): Promise<User> {
+    return prisma.user.create({ data: input })
   },
 }

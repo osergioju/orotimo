@@ -11,8 +11,8 @@ export interface CreateSchoolInput {
 }
 
 export const schoolsService = {
-  async listMine(ownerId: string): Promise<School[]> {
-    return schoolsRepository.listByOwner(ownerId)
+  async listMine(userId: string): Promise<School[]> {
+    return schoolsRepository.listAccessibleByUser(userId)
   },
 
   async getById(id: string): Promise<School | null> {
